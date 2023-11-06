@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import json
 import os
-from Metadata import metadata
+from lib.Metadata import metadata
 import h5py
 class Data:
     
@@ -90,9 +90,9 @@ class Data:
         
         TRAINING_PATCHES: list = [self.patches[i] for i in TRAINING_CLASSES]
         TESTING_PATCHES: list = [self.patches[i] for i in TESTING_CLASSES]
-        TUNNIG_PATCHES:list = [TESTING_PATCHES[i][:5,:,:,:,:] for i in range(6)]
+        TUNNING_PATCHES:list = [TESTING_PATCHES[i][:5,:,:,:,:] for i in range(6)]
         
-        return NUM_CLASSES, TRAINING_CLASSES, TRAINING_LABELS, TUNNING_LABELS, TESTING_CLASSES, TESTING_LABELS, TRAINING_PATCHES,TUNNIG_PATCHES, TESTING_PATCHES
+        return NUM_CLASSES, TRAINING_CLASSES, TRAINING_LABELS, TUNNING_LABELS, TESTING_CLASSES, TESTING_LABELS, TRAINING_PATCHES,TUNNING_PATCHES, TESTING_PATCHES
     
     def get_target_names(self):
         return self.dataset_meta['target_names']
