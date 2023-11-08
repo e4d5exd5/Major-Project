@@ -130,9 +130,9 @@ metadata = {
       "Tennis Court",
       "Running Track"
     ],
-    "num_classes": 16,
-    "training_classes": [1, 2, 4, 5, 7, 9, 10, 11, 13, 14],
-    "testing_classes": [0, 3, 6, 8, 12, 15],
+    "num_classes": 7,
+    "training_classes": [1, 2, 4, 5, 7],
+    "testing_classes": [0, 3, 6],
     "label_offset": 0
   }
 }

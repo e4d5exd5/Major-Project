@@ -90,7 +90,8 @@ class Data:
         
         TRAINING_PATCHES: list = [self.patches[i] for i in TRAINING_CLASSES]
         TESTING_PATCHES: list = [self.patches[i] for i in TESTING_CLASSES]
-        TUNNING_PATCHES:list = [TESTING_PATCHES[i][:5,:,:,:,:] for i in range(6)]
+        print(len(TESTING_PATCHES))
+        TUNNING_PATCHES:list = [TESTING_PATCHES[i][:5,:,:,:,:] for i in range(len(TESTING_CLASSES))]
         
         return NUM_CLASSES, TRAINING_CLASSES, TRAINING_LABELS, TUNNING_LABELS, TESTING_CLASSES, TESTING_LABELS, TRAINING_PATCHES,TUNNING_PATCHES, TESTING_PATCHES
     
@@ -99,5 +100,8 @@ class Data:
 
 if __name__ == '__main__':
     d = Data('HU', 30, 5)
-    X, Y, patches = d.get_data()
-    print(X.shape, Y.shape, len(patches))
+    X, Y = d.get_original_data()
+    print(set(Y))
+    # print(X.shape, Y.shape, len(patches[8-1]))
+    # for i in range(len(patches)):
+    #     print(i, len(patches[i]))
