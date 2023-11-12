@@ -1,0 +1,154 @@
+support (25, 11, 11, 30, 1)
+query (75, 11, 11, 30, 1)
+
+C 5
+K 5
+N 15
+
+Concated (100, 11, 11, 30, 1)
+Z (100, 128)
+Z_p (5, 5, 128) (25 supp divided into 5 class and 5 supps)
+Z_p (5, 128) (mean of 5 supps (middle one is collapsed))
+z_q (75, 128)
+dist (75, 5) (distance between zq and zpmean)
+log (75, 5)
+pred (75, 5)
+
+//  Ignore stuff above
+
+What are we doing?
+Creating OMR sheet. its just 75 arrays containing 1 and 0, 1 where the index is correct acc to grounf=d truth else 0
+for eg:
+lets say patch one belongs to class 3
+so omr sheet for that particular patch of query will be [0,0,1,0,0].
+like this we have 75, one for each query patch.
+
+We have a some support patches (25) and query patches (75).
+We then combine them such as support then query and we get a single array like of 100 patches.
+We then pass it through the encoder. Our encoder's output layer consists of 128 logits. Hence the output 
+of those 100 patches will be of shape (100, 128), where 100 are the no of patches passed and 128 are the ouput logits.
+
+We then separate the ouput lets call it Z.
+The first 25 are support's output Z_s (s for support)
+after that 75 remaining are query Z_q (q for query).
+
+For Z_s, we know that there are 5 classes of patches with 5 patches for each class hence 25. So we seperate them acc to their class. like (25, 128) -> (5, 5, 128). We can do this because we don't randomly shuffle them while creating them. We create them sequentially.
+
+We reduce each class's patches into 1 (5, 5, 128) -> (5, 128)
+Explaination:
+[                                              
+	[    // Class 1                             	  
+		[1, 2, 3 ......, 126, 127, 128],  // Patch 1           
+		[1, 2, 3 ......, 126, 127, 128],  // Patch 2
+		[1, 2, 3 ......, 126, 127, 128],  // Patch 3
+		[1, 2, 3 ......, 126, 127, 128],  // Patch 4
+		[1, 2, 3 ......, 126, 127, 128],  // Patch 5
+	]
+
+	[    // Class 2
+		[1, 2, 3 ......, 126, 127, 128],
+		[1, 2, 3 ......, 126, 127, 128],
+		[1, 2, 3 ......, 126, 127, 128],
+		[1, 2, 3 ......, 126, 127, 128],
+		[1, 2, 3 ......, 126, 127, 128],
+	]
+
+	[    // Class 3
+		[1, 2, 3 ......, 126, 127, 128],
+		[1, 2, 3 ......, 126, 127, 128],
+		[1, 2, 3 ......, 126, 127, 128],
+		[1, 2, 3 ......, 126, 127, 128],
+		[1, 2, 3 ......, 126, 127, 128],
+	]
+
+	[    // Class 4
+		[1, 2, 3 ......, 126, 127, 128],
+		[1, 2, 3 ......, 126, 127, 128],
+		[1, 2, 3 ......, 126, 127, 128],
+		[1, 2, 3 ......, 126, 127, 128],
+		[1, 2, 3 ......, 126, 127, 128],
+	]
+
+	[    // Class 5
+		[1, 2, 3 ......, 126, 127, 128],
+		[1, 2, 3 ......, 126, 127, 128],
+		[1, 2, 3 ......, 126, 127, 128],
+		[1, 2, 3 ......, 126, 127, 128],
+		[1, 2, 3 ......, 126, 127, 128],
+	]
+]
+
+[    
+	[1, 2, 3 ......, 126, 127, 128], // Class 1 (mean of all 5 patches)
+	[1, 2, 3 ......, 126, 127, 128], // Class 2
+	[1, 2, 3 ......, 126, 127, 128], // Class 3
+	[1, 2, 3 ......, 126, 127, 128], // Class 4
+	[1, 2, 3 ......, 126, 127, 128], // Class 5
+]
+
+After this, we find distance between these support patches output (Z_s) with query patches output (Z_q)
+How does that work?
+For each patch in Z_q, we calculate the euqlidian distance to each mean patch of Z_s
+so for every patch of Z_q we get 5 values i.e 5 distances to each of the patch of Z_s
+Hence output of euqlidian distance is of shape (75, 5)
+After that we calculate log softmax of these distnace and softmax as well.
+Finally softmax values are considered to the prediction for that particula N_time.
+
+
+so after N times we get a N such predictions of shape (N, 75, 5).
+
+Now our task is to check wheather the predictions are correct or not?
+
+We can do that simply in 2 steps.
+
+1. Mean it.
+	As we know that these N predictions are for the same support and query patchs, and we do that N times for getting variance.
+	We can just mean all these into one mean prediction, lets call it M_P (mean predictions)
+	So, (N, 75, 5) -> (75, 5)
+
+	Same with loss, instead  of mean we do standard deviation and the  we multiply with that OMR sheet (y) 
+	so that we get the SD for only correct output.
+	we then mean it for all 75 patches and save it to update the optimizer.
+
+2. Check those 75 patches with our OMR sheet.
+	Now that we have the mean of 75 patches and and our OMR sheet of same shape (75, 5).
+	We can just check if the index of greatest of the 5 values in M_P corresponnds to the index of 1 in OMR sheet.
+	If they are same the the prediction is correct or else incorrect.
+
+
+We are doing the same thing in testing but with unseen classes.
+
+
+
+Million Dollar Question
+How to get prediction for every patch to genrate Image?
+
+Tough one.
+
+2 word answer: We Can'task
+
+Explaination:
+
+We first need to understand how this SPN thingy works,
+Our OMR sheet only contains 5 options for 5 classes.
+We calculate distnace between support and query logits and then we check with OMR sheet.
+
+So, to do it for the whole image, we need, 
+16 option long OMR sheet
+and no support patches.
+
+Becuase no support patches we cannot reduce 128 logits -> 16 classes.
+Hence in OG SPN paper they have no code to do this.
+
+But if we really want to do this what to do?
+
+Well, firstly we need to change our model to give 16 logits instead of 128.
+It's a simple dense layer.
+
+Next we need to change the OMR sheet to be 16 options no matter the N shot or whatever.
+
+So that each of that logits can be mapped to each of the class. and we can easyly predict it.
+Then we don't need to do all that densing and stuff.
+
+Like right now we are checking where this 128 logits from support looks simmilar to this 128 logits from query.
+After this implementation, we will do the same just 128 will be 16.
