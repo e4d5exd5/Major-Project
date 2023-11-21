@@ -57,11 +57,18 @@ class Stats:
         print('\n')
         print('{}'.format(confusion))
     
-    def saveReport(self, PATH):
+    def saveReport(self, PATH, dataset, n_times, tau):
         classification = str(self.classification)
         confusion = str(self.confusion)
 
         with open(PATH, 'w') as x_file:
+            
+            x_file.write('Dataset : {}'.format(dataset))
+            x_file.write('\n')
+            x_file.write('N times : {}'.format(n_times))
+            x_file.write('\n')
+            x_file.write('TAU : {}'.format(tau))
+            x_file.write('\n')
             x_file.write('{} Kappa accuracy (%)'.format(self.kappa))
             x_file.write('\n')
             x_file.write('{} Overall accuracy (%)'.format(self.oa))
