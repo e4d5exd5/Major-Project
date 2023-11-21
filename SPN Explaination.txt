@@ -17,10 +17,10 @@ pred (75, 5)
 //  Ignore stuff above
 
 What are we doing?
-Creating OMR sheet. its just 75 arrays containing 1 and 0, 1 where the index is correct acc to grounf=d truth else 0
+Creating OMR sheet. its just 75 arrays containing 1 and 0, 1 where the index is correct acc to ground truth else 0
 for eg:
 lets say patch one belongs to class 3
-so omr sheet for that particular patch of query will be [0,0,1,0,0].
+so omr sheet for that particular patch of query will be [0, 0, 1, 0, 0 ,..1.. 16].
 like this we have 75, one for each query patch.
 
 We have a some support patches (25) and query patches (75).
@@ -85,6 +85,19 @@ Explaination:
 	[1, 2, 3 ......, 126, 127, 128], // Class 4
 	[1, 2, 3 ......, 126, 127, 128], // Class 5
 ]
+[    
+	[1, 2, 3 ......, 126, 127, 128], // Class 1 (mean of all 5 patches)
+	[1, 2, 3 ......, 126, 127, 128], // Class 2
+	[1, 2, 3 ......, 126, 127, 128], // Class 3
+    .
+    .
+    .   75                                 Z_q
+    .
+    .
+	[1, 2, 3 ......, 126, 127, 128], // Class 4
+	[1, 2, 3 ......, 126, 127, 128], // Class 5
+]
+
 
 After this, we find distance between these support patches output (Z_s) with query patches output (Z_q)
 How does that work?
