@@ -2,29 +2,15 @@ from tensorflow.keras import Sequential, layers
 from tensorflow.keras.models import Model
 import tensorflow as tf
 
-class SelfAttention(tf.keras.layers.Layer):
-    def __init__(self, n_channels):
-        super(SelfAttention, self).__init__()
-        self.query = self._conv(n_channels, n_channels // 8)
-        self.key = self._conv(n_channels, n_channels // 8)
-        self.value = self._conv(n_channels, n_channels)
-        self.gamma = self.add_weight("gamma", shape=(1,), initializer="zeros", trainable=True)
 
-    def _conv(self, n_in, n_out):
-        return tf.keras.layers.Conv1D(n_out, kernel_size=1, use_bias=False)
+def SelfAttention(conv):
+    output_layer_SA_dot = layers.Attention()([conv, conv])
 
-    def call(self, x):
-        # Notation from the paper.
-        size = x.shape
-        print('size', size)
-        x = tf.reshape(x, (size[-1], -1))
-        
-        print(x.shape)
-        # x = tf.reshape(x, (size[0], size[1]*size[2], self.n_channels))
-        f, g, h = self.query(x), self.key(x), self.value(x)
-        beta = tf.nn.softmax(tf.matmul(tf.transpose(f, perm=[0, 2, 1]), g), axis=1)
-        o = self.gamma * tf.matmul(h, beta) + x
-        return tf.reshape(o, size)
+    output_layer_softmax = layers.Softmax()(output_layer_SA_dot)
+
+    output_layer_SA_concat = layers.Attention(score_mode='concat')([output_layer_softmax, conv])
+    
+    return output_layer_SA_concat
 
 def createModel(IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_DEPTH, IMAGE_CHANNEL):
     """
@@ -54,18 +40,24 @@ def createModel(IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_DEPTH, IMAGE_CHANNEL):
     output_layer_1_conv = layers.Conv3D(filters=8, kernel_size=(3,3,7), activation='relu',input_shape=(IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_DEPTH, IMAGE_CHANNEL),padding='same')(input_layer)
 
     output_layer_1_drop3d = layers.SpatialDropout3D(rate=0.3, data_format='channels_last')(output_layer_1_conv,training=True)
+    
+    output_layer_1_SA = SelfAttention(output_layer_1_drop3d)
 
-    output_layer_2_conv = layers.Conv3D(filters=16, kernel_size=(3,3,5), activation='relu',padding='same')(output_layer_1_drop3d)
+    output_layer_2_conv = layers.Conv3D(filters=16, kernel_size=(3, 3, 5), activation='relu', padding='same')(output_layer_1_SA)
 
     output_layer_2_drop3d = layers.SpatialDropout3D(rate=0.3, data_format='channels_last')(output_layer_2_conv,training=True)
 
-    output_layer_3_conv = layers.Conv3D(filters=32, kernel_size=(3,3,3), activation= 'relu')(output_layer_2_drop3d)
+    output_layer_2_SA = SelfAttention(output_layer_2_drop3d)
+    
+    output_layer_3_conv = layers.Conv3D(filters=32, kernel_size=(3, 3, 3), activation='relu')(output_layer_2_SA)
 
-    output_layer_3_reshaped = layers.Reshape((output_layer_3_conv.shape[1], output_layer_3_conv.shape[2], output_layer_3_conv.shape[3]*output_layer_3_conv.shape[4]))(output_layer_3_conv)
+    output_layer_3_SA = SelfAttention(output_layer_3_conv)
+    
+    output_layer_3_reshaped = layers.Reshape((output_layer_3_SA.shape[1], output_layer_3_SA.shape[2], output_layer_3_SA.shape[3]*output_layer_3_SA.shape[4]))(output_layer_3_SA)
 
-    output_layer_4_conv = layers.Conv2D(filters=64, kernel_size=(3,3), activation='relu')(output_layer_3_reshaped)
-
-    output_layer_5_SA = SelfAttention(64)(output_layer_4_conv)
+    output_layer_4_conv = layers.Conv2D(filters=64, kernel_size=(3, 3), activation='relu')(output_layer_3_reshaped)
+    
+    output_layer_5_SA = SelfAttention(output_layer_4_conv)
     
     output_layer_5_normalization = layers.LayerNormalization()(output_layer_5_SA)
 
@@ -86,5 +78,6 @@ def createModel(IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_DEPTH, IMAGE_CHANNEL):
 
 if __name__ == '__main__':
     model = createModel(11, 11, 30, 1)
+    print(model.summary())
     
     
