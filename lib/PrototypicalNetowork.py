@@ -80,7 +80,7 @@ class Prototypical(Model):
                 distances = distances / self.TAU
             
             # Calculate predictions by applying softmax on distances
-            predictions = tf.nn.softmax(distances)
+            predictions = tf.nn.softmax(-distances, axis=-1)
             
             # Append the predictions for the current pass to the list of predictions.
             all_predictions.append(predictions)
@@ -120,7 +120,7 @@ class Prototypical(Model):
             
             # Calculate the accuracy for each query patch.
             # Check if the index of max probability is equal to the true class index.
-            mean_eq = tf.cast(tf.equal(tf.cast(mean_predictions_indices, tf.int32), tf.cast(tf.argmax(y, axis=-1), tf.int32)), tf.float32)
+            mean_eq = tf.cast(tf.equal(tf.cast(tf.argmax(mean_predictions, axis= -1), tf.int32), tf.cast(tf.argmax(y, axis=-1), tf.int32)), tf.float32)
             
             # Calculate the mean accuracy.
             mean_accuracy = tf.reduce_mean(mean_eq)
@@ -155,19 +155,16 @@ class Prototypical(Model):
                 is_correct = (mean_predictions_indices[i] == x)
                 classwise_mean_acc[x].append(int(is_correct))
                 
-                #  ----------------------
-                # Standard deviation
-                
                 # Get all the predictions for the current query patch from all the n_times.
-                p_i = np.array([p[i,:] for p in all_predictions])
-                
+                p_i = np.array([p[i, :] for p in all_predictions])
+
                 # Get the standard deviation of the predictions for the current query patch.
                 std += tf.math.reduce_std(p_i, axis=0)[x]
 
             # Calculate the mean accuracy for each class
-            classwise_mean_acc = [sum(acc_list) / len(acc_list)
-                                if acc_list else 0 for acc_list in classwise_mean_acc]
+            classwise_mean_acc = np.mean(classwise_mean_acc, axis=1)
             
+
             loss += self.MC_LOSS_WEIGHT*std
             
             return loss, all_predictions, mean_accuracy, classwise_mean_acc, y

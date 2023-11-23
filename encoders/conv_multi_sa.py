@@ -40,16 +40,12 @@ def createModel(IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_DEPTH, IMAGE_CHANNEL):
     output_layer_1_conv = layers.Conv3D(filters=8, kernel_size=(3,3,7), activation='relu',input_shape=(IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_DEPTH, IMAGE_CHANNEL),padding='same')(input_layer)
 
     output_layer_1_drop3d = layers.SpatialDropout3D(rate=0.3, data_format='channels_last')(output_layer_1_conv,training=True)
-    
-    output_layer_1_SA = SelfAttention(output_layer_1_drop3d)
 
-    output_layer_2_conv = layers.Conv3D(filters=16, kernel_size=(3, 3, 5), activation='relu', padding='same')(output_layer_1_SA)
+    output_layer_2_conv = layers.Conv3D(filters=16, kernel_size=(3, 3, 5), activation='relu', padding='same')(output_layer_1_drop3d)
 
     output_layer_2_drop3d = layers.SpatialDropout3D(rate=0.3, data_format='channels_last')(output_layer_2_conv,training=True)
-
-    output_layer_2_SA = SelfAttention(output_layer_2_drop3d)
     
-    output_layer_3_conv = layers.Conv3D(filters=32, kernel_size=(3, 3, 3), activation='relu')(output_layer_2_SA)
+    output_layer_3_conv = layers.Conv3D(filters=32, kernel_size=(3, 3, 3), activation='relu')(output_layer_2_drop3d)
 
     output_layer_3_SA = SelfAttention(output_layer_3_conv)
     
