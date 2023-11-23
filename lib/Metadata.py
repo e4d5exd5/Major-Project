@@ -95,8 +95,8 @@ metadata = {
       "Shadows"
     ],
     "num_classes": 9,
-    "training_classes": [1, 2, 4, 5, 7],
-    "testing_classes": [0, 3, 6, 8],
+    "training_classes": [1, 2, 4, 5, 7, 8],
+    "testing_classes": [0, 3, 6],
     "label_offset": 1
   },
   
