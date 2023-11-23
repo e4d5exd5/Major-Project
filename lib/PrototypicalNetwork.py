@@ -162,7 +162,8 @@ class Prototypical(Model):
                 std += tf.math.reduce_std(p_i, axis=0)[x]
 
             # Calculate the mean accuracy for each class
-            classwise_mean_acc = np.mean(classwise_mean_acc, axis=1)
+            classwise_mean_acc = [sum(acc_list) / len(acc_list)
+                                if acc_list else 0 for acc_list in classwise_mean_acc]
             
 
             loss += self.MC_LOSS_WEIGHT*std
