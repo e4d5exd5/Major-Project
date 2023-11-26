@@ -73,18 +73,16 @@ def createModel(IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_DEPTH, IMAGE_CHANNEL):
     output_layer_4_conv = layers.Conv2D(filters=64, kernel_size=(3,3), activation='relu')(output_layer_3_reshaped)
 
     output_layer_5_SA = SelfAttention(output_layer_4_conv)
-    
-    output_layer_5_normalization = layers.LayerNormalization()(output_layer_5_SA)
 
-    output_layer_6_flatten = layers.Flatten()(output_layer_5_normalization)
+    output_layer_6_flatten = layers.Flatten()(output_layer_5_SA)
 
     output_layer_6_drop = layers.Dropout(rate=0.4)(output_layer_6_flatten,training=True)
 
     output_layer_6_dense = layers.Dense(256, activation='relu')(output_layer_6_drop)
 
-    output_layer_7_conv = layers.Dropout(0.4)(output_layer_6_dense,training=True)
+    output_layer_7_drop = layers.Dropout(0.4)(output_layer_6_dense,training=True)
 
-    output_layer_7_dense = layers.Dense(128, activation='relu')(output_layer_7_conv)
+    output_layer_7_dense = layers.Dense(128, activation='relu')(output_layer_7_drop)
 
     model = Model(inputs=input_layer, outputs=output_layer_7_dense)
     
