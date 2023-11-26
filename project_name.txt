@@ -6,5 +6,4 @@ FSL based HSI Classification
 
 
 Final Name
-
-SA for SPN in FSL based HSI Classification
+SA in SPN for FSL based HSI Classification
