@@ -56,7 +56,7 @@ def predictImage(Data: Data, ProtoModel: Prototypical or None, imageData: tuple,
         all_preds.extend(mean_predictions)
         all_y_preds.extend(y)
     
-    return predictions, all_preds, all_y_preds
+    return predictions, Y, all_preds, all_y_preds
         
 
 
