@@ -21,10 +21,11 @@ class Data:
         self.Y_og: np.ndarray
         self.datasetShape: tuple
         self.patches: list
+        self.windowSize = windowSize
         self.load_json()
         self.load_data()
         self.apply_pca(pca_components)
-        self.createImageCubes(windowSize)
+        self.createImageCubes()
         self.classWisePatches()
         
         
@@ -69,8 +70,8 @@ class Data:
     def padWithZeros(self, X, margin):
         return np.pad(X, ((margin,margin), (margin,margin), (0,0)), 'constant', constant_values=0)
     
-    def createImageCubes(self, windowSize):
-        margin = int(windowSize // 2)
+    def createImageCubes(self):
+        margin = int(self.windowSize // 2)
         zeroPaddedX = self.padWithZeros(self.X, margin)
         dataPatches = [zeroPaddedX[r - margin:r + margin + 1, c - margin:c + margin + 1] for r in range(margin, zeroPaddedX.shape[0] - margin) for c in range(margin, zeroPaddedX.shape[1] - margin)]
         dataPatches = np.expand_dims(dataPatches, axis=-1)
@@ -80,11 +81,11 @@ class Data:
         return self.X, self.Y
         
         
-    def createPatches(self, windowSize):
-        margin = int(windowSize // 2)
+    def createPatches(self):
+        margin = int(self.windowSize // 2)
         zeroPaddedX = self.padWithZeros(self.X_pca, margin)
         dataPatches = np.ndarray(
-            shape=(self.X_pca.shape[0], self.X_pca.shape[1], windowSize, windowSize, self.X_pca.shape[-1]))
+            shape=(self.X_pca.shape[0], self.X_pca.shape[1], self.windowSize, self.windowSize, self.X_pca.shape[-1]))
         print(dataPatches.shape)
         for c in range(margin, zeroPaddedX.shape[1] - margin):
             for r in range(margin, zeroPaddedX.shape[0] - margin):
