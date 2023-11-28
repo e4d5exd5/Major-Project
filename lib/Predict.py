@@ -41,7 +41,6 @@ def predictImage(Data: Data, ProtoModel: Prototypical or None, imageData: tuple,
     X, Y = Data.createPatches()
     _, _, X_patchwise = Data.get_data()
     C = Data.get_num_classes()
-    print(X.shape, Y.shape)
     X_shape = Data.get_dataset_shape()
     predictions = np.zeros((X_shape[0], X_shape[1]))
     K = 5
@@ -52,12 +51,11 @@ def predictImage(Data: Data, ProtoModel: Prototypical or None, imageData: tuple,
 
     for x, y,supportPatches, supportLabels, queryLabels, queryPatches, w, h in generateWindow(X, Y, X_patchwise, 10, C, imageData):
         print(x, y, len(queryLabels), queryPatches.shape, len(supportLabels), supportPatches.shape)
-        loss, mean_predictions, mean_accuracy, classwise_mean_acc, y = ProtoModel(supportPatches, queryPatches, supportLabels, queryLabels, K, C, len(queryLabels), N_TIMES,training=False)
+        loss, mean_predictions, mean_accuracy, classwise_mean_acc, y_preds = ProtoModel(supportPatches, queryPatches, supportLabels, queryLabels, K, C, len(queryLabels), N_TIMES,training=False)
         correctIndices = tf.cast(tf.argmax(mean_predictions, axis=-1), tf.int32) 
-        correctPatch = np.reshape(correctIndices.numpy(), (w, h))
-        predictions[x:x+w,  y:y+h] = np.array(correctPatch)
+        predictions[x:x+w,  y:y+h] = np.reshape(correctIndices.numpy(), (w, h))
         all_preds.extend(mean_predictions)
-        all_y_preds.extend(y)
+        all_y_preds.extend(y_preds)
     
     return predictions, Y, all_preds, all_y_preds
         
