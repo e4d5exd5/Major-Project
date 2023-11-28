@@ -47,8 +47,8 @@ class Prototypical(Model):
         cat = tf.concat([support,query], axis=0)
         loss = 0
         all_predictions = []
-        y = np.zeros((int(C*N),C))
-        for i in range(int(C*N)) :
+        y = np.zeros((len(query_labels),C))
+        for i in range(len(query_labels)) :
             x = support_labels.index(query_labels[i])
             y[i][x] = 1
 
@@ -148,7 +148,7 @@ class Prototypical(Model):
             '''
             classwise_mean_acc = [[] for _ in range(C)]
             std = 0
-            for i in range(int(C * N)):
+            for i in range(int(len(query_labels))):
                 #  Classwise mean accuracy
                 x = support_labels.index(query_labels[i])
                 
