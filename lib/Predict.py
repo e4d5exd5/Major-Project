@@ -9,6 +9,8 @@ except:
 import tensorflow as tf
 import numpy as np
 import random
+from tqdm.auto import tqdm
+
 
 def generateWindow(X: np.ndarray, Y: np.ndarray, patches: list, windowSize: int, numClasses:int, imageData: tuple, C: int = 16, K:int = 5):
 
@@ -47,10 +49,11 @@ def predictImage(Data: Data, ProtoModel: Prototypical or None, imageData: tuple,
     K = 5
     all_preds = []
     all_y_preds = []
-
+    windowSize = 10
     # print(predictions.shape)
 
-    for x, y,supportPatches, supportLabels, queryLabels, queryPatches, w, h in generateWindow(X, Y, X_patchwise, 10, C, imageData):
+    epochObj = tqdm(generateWindow(X, Y, X_patchwise, windowSize, C, imageData), desc=f'Patch', total=((X.shape[0]//windowSize) * (X.shape[1] //windowSize)))
+    for x, y,supportPatches, supportLabels, queryLabels, queryPatches, w, h in epochObj:
         print(x, y, len(queryLabels), queryPatches.shape, len(supportLabels), supportPatches.shape)
         loss, mean_predictions, mean_accuracy, classwise_mean_acc, y = ProtoModel(supportPatches, queryPatches, supportLabels, queryLabels, K, C, len(queryLabels), N_TIMES,training=False)
         correctIndices = tf.cast(tf.argmax(mean_predictions, axis=-1), tf.int32) 
