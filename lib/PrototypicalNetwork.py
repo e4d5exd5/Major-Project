@@ -33,7 +33,7 @@ class Prototypical(Model):
         self.TAU = TAU
 
     def call(self, support, query, support_labels, query_labels, K, C, N,n_times,training=True):
-        '''
+        '''                                                      5  16  ?
         support: support images (25, 11, 11, 30, 1)
         query: query images (75, 11, 11, 30, 1)
         supppor_labels: support labels (25, 5)

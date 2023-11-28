@@ -6,7 +6,10 @@ import numpy as np
 import pandas as pd
 import json
 import os
-from lib.Metadata import metadata
+try:
+    from lib.Metadata import metadata
+except:
+    from Metadata import metadata
 import h5py
 class Data:
     
@@ -15,6 +18,7 @@ class Data:
         self.X: np.ndarray
         self.Y: np.ndarray
         self.X_pca: np.ndarray 
+        self.datasetShape: tuple
         self.patches: list
         self.load_json()
         self.load_data()
@@ -32,6 +36,7 @@ class Data:
        X, Y = self.get_original_data()
        self.X = X
        self.Y = Y
+       self.datasetShape = self.X.shape
        return self.X, self.Y
             
     
@@ -59,18 +64,30 @@ class Data:
         del pca, new_X# delete the PCA object
         return self.X_pca
     
-    def padWithZeros(self, margin):
-        return np.pad(self.X, ((margin,margin), (margin,margin), (0,0)), 'constant', constant_values=0)
+    def padWithZeros(self, X, margin):
+        return np.pad(X, ((margin,margin), (margin,margin), (0,0)), 'constant', constant_values=0)
     
     def createImageCubes(self, windowSize):
         margin = int(windowSize // 2)
-        zeroPaddedX = self.padWithZeros(margin)
+        zeroPaddedX = self.padWithZeros(self.X, margin)
         dataPatches = [zeroPaddedX[r - margin:r + margin + 1, c - margin:c + margin + 1] for r in range(margin, zeroPaddedX.shape[0] - margin) for c in range(margin, zeroPaddedX.shape[1] - margin)]
         dataPatches = np.expand_dims(dataPatches, axis=-1)
         dataLabels = [self.Y[r-margin, c-margin] for r in range(margin, zeroPaddedX.shape[0] - margin) for c in range(margin, zeroPaddedX.shape[1] - margin)]
         self.X = dataPatches
         self.Y = np.array(dataLabels)
         return self.X, self.Y
+        
+        
+    def createPatches(self, windowSize):
+        margin = int(windowSize // 2)
+        zeroPaddedX = self.padWithZeros(self.X_pca, margin)
+        dataPatches = np.ndarray(
+            shape=(self.X_pca.shape[0], self.X_pca.shape[1], windowSize, windowSize, self.X_pca.shape[-1]))
+        print(dataPatches.shape)
+        for c in range(margin, zeroPaddedX.shape[1] - margin):
+            for r in range(margin, zeroPaddedX.shape[0] - margin):
+                dataPatches[r - margin, c - margin] = zeroPaddedX[r - margin:r + margin + 1, c - margin:c + margin + 1]
+        return dataPatches, self.Y
 
     def classWisePatches(self):
         patches =  [ self.X[self.Y==i,:,:,:,:] for i in range(1,self.dataset_meta['num_classes']+1) ]
@@ -79,6 +96,12 @@ class Data:
     
     def get_data(self):
         return self.X, self.Y, self.patches
+    
+    def get_pca_data(self):
+        return self.X_pca, self.Y
+        
+    def get_dataset_shape(self):
+        return self.datasetShape
     
     def load_defaults(self):
         NUM_CLASSES = self.dataset_meta['num_classes']
@@ -99,9 +122,10 @@ class Data:
         return self.dataset_meta['target_names']
 
 if __name__ == '__main__':
-    d = Data('HU', 30, 5)
-    X, Y = d.get_original_data()
-    print(set(Y))
-    # print(X.shape, Y.shape, len(patches[8-1]))
-    # for i in range(len(patches)):
-    #     print(i, len(patches[i]))
+    d = Data('IP', 30, 1)
+    _X, _Y = d.get_original_data()
+    print(_X.shape, _Y.shape)
+    X, Y, patches = d.get_data()
+    _X_pca, _Y = d.get_pca_data()
+    print(_X_pca.shape, _Y.shape)
+    print(X.shape, Y.shape)
