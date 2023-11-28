@@ -18,6 +18,7 @@ class Data:
         self.X: np.ndarray
         self.Y: np.ndarray
         self.X_pca: np.ndarray 
+        self.Y_og: np.ndarray
         self.datasetShape: tuple
         self.patches: list
         self.load_json()
@@ -34,6 +35,7 @@ class Data:
         
     def load_data(self):
        X, Y = self.get_original_data()
+       self.Y_og = Y
        self.X = X
        self.Y = Y
        self.datasetShape = self.X.shape
@@ -87,7 +89,7 @@ class Data:
         for c in range(margin, zeroPaddedX.shape[1] - margin):
             for r in range(margin, zeroPaddedX.shape[0] - margin):
                 dataPatches[r - margin, c - margin] = zeroPaddedX[r - margin:r + margin + 1, c - margin:c + margin + 1]
-        return dataPatches, self.Y
+        return dataPatches, self.Y_og
 
     def classWisePatches(self):
         patches =  [ self.X[self.Y==i,:,:,:,:] for i in range(1,self.dataset_meta['num_classes']+1) ]
@@ -103,6 +105,8 @@ class Data:
     def get_dataset_shape(self):
         return self.datasetShape
     
+    def get_num_classes(self):
+        return self.dataset_meta['num_classes']
     def load_defaults(self):
         NUM_CLASSES = self.dataset_meta['num_classes']
         TRAINING_CLASSES = self.dataset_meta['training_classes']

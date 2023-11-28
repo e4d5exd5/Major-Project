@@ -168,7 +168,7 @@ class Prototypical(Model):
 
             loss += self.MC_LOSS_WEIGHT*std
             
-            return loss, all_predictions, mean_accuracy, classwise_mean_acc, y
+            return loss, mean_predictions, mean_accuracy, classwise_mean_acc, y
 
 
     def save(self, model_path):
