@@ -1,0 +1,28 @@
+
+What do we have?
+
+We have:
+
+Original Data: X : (width, height, pca_components)
+Original Data: Y : (width, height, )
+
+Patches: X : (width * height, windowSize, windowSize, pca_components)
+Patches: Y : (width * height, )
+
+Model which takes in (BatchSize, windowSize, windowSize, pca_components, channels) and outputs (BatchSize, 128)
+
+---
+If you notice, we are not pass a single pixel we are passing a window of pixels. This is because we want to capture the spatial information of the pixels.
+But while classifying we are classifying the whole window and not the center pixel. But while checking if the prediction and class of center pixel.
+---
+Hence, if except for the center pixel, all other pixels are classified correctly, we will still get a low accuracy.
+---
+
+====
+Ignoring this, let's try to classify each pixel in the whole image.
+We will use a sliding window approach to classify each pixel in the image.
+
+Remember we have the Patch X 's 1st dimentions as width * height.
+Now let's reshape it to (width, height, windowSize, windowSize, pca_components)
+
+ 
