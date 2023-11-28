@@ -18,13 +18,10 @@ def generateWindow(X: np.ndarray, Y: np.ndarray, patches: list, windowSize: int,
     for y in range(0, X.shape[0], windowSize ):
         for x in range(0, X.shape[1], windowSize):
             supportPatches = []
-            supportLabels = [i for i in range(0, numClasses)]
-            supportPatches = []
-            supportLabels = [i for i in range(0, numClasses)]
-            
+            supportLabels = [i for i in range(1, numClasses+1)]
             for n in supportLabels:
-                sran_indices = np.random.choice(len(patches[n]),K,replace=False)  # for class no X-1: select K samples 
-                supportPatches.extend( patches[n][sran_indices,:,:,:,:])
+                sran_indices = np.random.choice(len(patches[n-1]),K,replace=False)  # for class no X-1: select K samples 
+                supportPatches.extend( patches[n-1][sran_indices,:,:,:,:])
             
             queryPatches = X[x:x+windowSize, y:y+windowSize, :, :, :]
             queryLabels = Y[x:x+windowSize, y:y+windowSize]
@@ -53,7 +50,7 @@ def predictImage(Data: Data, ProtoModel: Prototypical or None, imageData: tuple,
 
     epochObj = tqdm(generateWindow(X, Y, X_patchwise, windowSize, C, imageData), desc=f'Patch', total=((X.shape[0]//windowSize) * (X.shape[1] //windowSize)))
     for x, y,supportPatches, supportLabels, queryLabels, queryPatches, w, h in epochObj:
-        print(x, y, len(queryLabels), queryPatches.shape, len(supportLabels), supportPatches.shape)
+        # print(x, y, len(queryLabels), queryPatches.shape, len(supportLabels), supportPatches.shape)
         loss, mean_predictions, mean_accuracy, classwise_mean_acc, y_preds = ProtoModel(supportPatches, queryPatches, supportLabels, queryLabels, K, C, len(queryLabels), N_TIMES,training=False)
         correctIndices = tf.cast(tf.argmax(mean_predictions, axis=-1), tf.int32) 
         predictions[x:x+w,  y:y+h] = np.reshape(correctIndices.numpy(), (w, h))

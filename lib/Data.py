@@ -129,8 +129,11 @@ class Data:
 if __name__ == '__main__':
     d = Data('IP', 30, 1)
     _X, _Y = d.get_original_data()
-    print(_X.shape, _Y.shape)
+    print(set(np.reshape(_Y, (145*145)).tolist()))
     X, Y, patches = d.get_data()
-    _X_pca, _Y = d.get_pca_data()
-    print(_X_pca.shape, _Y.shape)
-    print(X.shape, Y.shape)
+    print(len(patches))
+    s = 0
+    for i in range(len(patches)):
+        s += len(patches[i])
+        print(i, len(patches[i]))
+    print(s, 145*145)
