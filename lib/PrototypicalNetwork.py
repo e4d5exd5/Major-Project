@@ -49,8 +49,9 @@ class Prototypical(Model):
         all_predictions = []
         y = np.zeros((len(query_labels),C))
         for i in range(len(query_labels)) :
-            x = support_labels.index(query_labels[i])
-            y[i][x] = 1
+            if query_labels[i] != 0:
+                x = support_labels.index(query_labels[i])
+                y[i][x] = 1
 
             
         for i in range(n_times) :
@@ -150,16 +151,17 @@ class Prototypical(Model):
             std = 0
             for i in range(int(len(query_labels))):
                 #  Classwise mean accuracy
-                x = support_labels.index(query_labels[i])
+                if(query_labels[i] != 0):
+                    x = support_labels.index(query_labels[i])
+                    
+                    is_correct = (mean_predictions_indices[i] == x)
+                    classwise_mean_acc[x].append(int(is_correct))
                 
-                is_correct = (mean_predictions_indices[i] == x)
-                classwise_mean_acc[x].append(int(is_correct))
-                
-                # Get all the predictions for the current query patch from all the n_times.
-                p_i = np.array([p[i, :] for p in all_predictions])
+                    # Get all the predictions for the current query patch from all the n_times.
+                    p_i = np.array([p[i, :] for p in all_predictions])
 
-                # Get the standard deviation of the predictions for the current query patch.
-                std += tf.math.reduce_std(p_i, axis=0)[x]
+                    # Get the standard deviation of the predictions for the current query patch.
+                    std += tf.math.reduce_std(p_i, axis=0)[x]
 
             # Calculate the mean accuracy for each class
             classwise_mean_acc = [sum(acc_list) / len(acc_list)
