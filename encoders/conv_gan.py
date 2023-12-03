@@ -61,7 +61,6 @@ def createModel(IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_DEPTH, IMAGE_CHANNEL):
 
     model = Model(inputs=input_layer, outputs=output_layer_7_dense)
     
-    print(model.summary())
     return model
     
     

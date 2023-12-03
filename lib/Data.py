@@ -31,7 +31,6 @@ class Data:
         
     def load_json(self):
         self.dataset_meta = metadata[self.dataset]
-        print(self.dataset_meta['name'])
         return self.dataset_meta
         
     def load_data(self):
@@ -86,7 +85,6 @@ class Data:
         zeroPaddedX = self.padWithZeros(self.X_pca, margin)
         dataPatches = np.ndarray(
             shape=(self.X_pca.shape[0], self.X_pca.shape[1], self.windowSize, self.windowSize, self.X_pca.shape[-1]))
-        print(dataPatches.shape)
         for c in range(margin, zeroPaddedX.shape[1] - margin):
             for r in range(margin, zeroPaddedX.shape[0] - margin):
                 dataPatches[r - margin, c - margin] = zeroPaddedX[r - margin:r + margin + 1, c - margin:c + margin + 1]
@@ -118,7 +116,6 @@ class Data:
         
         TRAINING_PATCHES: list = [self.patches[i] for i in TRAINING_CLASSES]
         TESTING_PATCHES: list = [self.patches[i] for i in TESTING_CLASSES]
-        print(len(TESTING_PATCHES))
         TUNNING_PATCHES:list = [TESTING_PATCHES[i][:5,:,:,:,:] for i in range(len(TESTING_CLASSES))]
         
         return NUM_CLASSES, TRAINING_CLASSES, TRAINING_LABELS, TUNNING_LABELS, TESTING_CLASSES, TESTING_LABELS, TRAINING_PATCHES,TUNNING_PATCHES, TESTING_PATCHES

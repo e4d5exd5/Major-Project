@@ -4,7 +4,8 @@
 import tensorflow as tf
 import numpy as np
 from sklearn.metrics import confusion_matrix, accuracy_score, classification_report, cohen_kappa_score
-
+import os
+import csv
 from operator import truediv
 
 class Stats:
@@ -53,10 +54,11 @@ class Stats:
         print('\n')
         print('{}'.format(confusion))
     
-    def saveReport(self, PATH, dataset, n_times, tau):
+    def saveReport(self, PATH, FINAL_REPORT_PATH, dataset, n_times, tau, run, encoder):
         classification = str(self.classification)
         confusion = str(self.confusion)
-
+        print(f'OA {self.oa:.2f} | KA {self.kappa:.2f} | AA {self.aa:.2f}')
+        os.makedirs(os.path.dirname(PATH), exist_ok=True)
         with open(PATH, 'w') as x_file:
             
             x_file.write('Dataset : {}'.format(dataset))
@@ -65,9 +67,9 @@ class Stats:
             x_file.write('\n')
             x_file.write('TAU : {}'.format(tau))
             x_file.write('\n')
-            x_file.write('{} Kappa accuracy (%)'.format(self.kappa))
-            x_file.write('\n')
             x_file.write('{} Overall accuracy (%)'.format(self.oa))
+            x_file.write('\n')
+            x_file.write('{} Kappa accuracy (%)'.format(self.kappa))
             x_file.write('\n')
             x_file.write('{} Average accuracy (%)'.format(self.aa))
             x_file.write('\n')
@@ -77,6 +79,9 @@ class Stats:
             x_file.write('{}'.format(confusion))
             x_file.close()
         
+        with open(FINAL_REPORT_PATH, 'a', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow([dataset, encoder, tau, n_times, run+1, f'{self.oa:.2f}', f'{self.kappa:.2f}', f'{self.aa:.2f}'])
         
     def AA_andEachClassAccuracy(self):
         counter = self.confusion.shape[0]

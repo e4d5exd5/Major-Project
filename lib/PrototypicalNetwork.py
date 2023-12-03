@@ -18,7 +18,7 @@ def calc_euclidian_dists(x, y):
 
 
 class Prototypical(Model):
-    def __init__(self, model, w, h, d, c, MC_LOSS_WEIGHT, TAU):
+    def __init__(self, model, w, h, d, c, MC_LOSS_WEIGHT, TAU, N_TIMES):
         '''
         model: encoder model
         w: width of input image
@@ -31,9 +31,10 @@ class Prototypical(Model):
         self.encoder = model
         self.MC_LOSS_WEIGHT = MC_LOSS_WEIGHT
         self.TAU = TAU
+        self.n_times = N_TIMES
 
-    def call(self, support, query, support_labels, query_labels, K, C, N,n_times,training=True):
-        '''                                                      5  16  ?
+    def call(self, support, query, support_labels, query_labels, K, C, N,training=True):
+        '''                                                     
         support: support images (25, 11, 11, 30, 1)
         query: query images (75, 11, 11, 30, 1)
         supppor_labels: support labels (25, 5)
@@ -54,7 +55,7 @@ class Prototypical(Model):
                 y[i][x] = 1
 
             
-        for i in range(n_times) :
+        for i in range(self.n_times) :
             # Pass through encoder to get embeddings.
             z = self.encoder(cat)
 
@@ -89,7 +90,7 @@ class Prototypical(Model):
         
         if training:
             # Convert the list of predictions to a tensor.
-            predictions = tf.convert_to_tensor(np.reshape(np.asarray(all_predictions),(n_times,int(C*N),C)))
+            predictions = tf.convert_to_tensor(np.reshape(np.asarray(all_predictions),(self.n_times,int(C*N),C)))
 
             # Calculate the standard deviation of the predictions.
             std_predictions = tf.math.reduce_std(predictions,axis=0)
