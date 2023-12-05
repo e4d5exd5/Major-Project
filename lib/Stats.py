@@ -20,19 +20,30 @@ class Stats:
 
     def get_accuracy(self):
         # Accuracy
-        self.y_test = tf.concat([self.mean_predictions1,self.mean_predictions2],axis=0)
-        self.y_pred = tf.concat([self.y1,self.y2],axis=0)
+        try:
+            self.y_test = tf.concat([self.mean_predictions1,self.mean_predictions2],axis=0)
+            self.y_pred = tf.concat([self.y1,self.y2],axis=0)
+        except Exception as e:
+            print('There is only one mean prediction. Skipping Concat')
+            self.y_test = self.mean_predictions1
+            self.y_pred = self.y1
         correct_pred = tf.cast(tf.equal(                                             # accuracy for the current pass
                     tf.cast(tf.argmax(self.y_test, axis=-1), tf.int32), 
                     tf.cast(tf.argmax(self.y_pred,axis=-1), tf.int32)), tf.float32)
         o_acc = tf.reduce_mean(correct_pred) 
         
-        cm_pred1 = tf.argmax(self.mean_predictions1, axis=-1)
-        cm_pred2 = tf.argmax(self.mean_predictions2, axis=-1) + 3
-        self.y_test = tf.concat([cm_pred1,cm_pred2],axis=0)
-        cm_true1 = tf.argmax(self.y1,axis=-1)
-        cm_true2 = tf.argmax(self.y2,axis=-1) + 3
-        self.y_pred = tf.concat([cm_true1,cm_true2],axis=0)
+        try:
+            cm_pred1 = tf.argmax(self.mean_predictions1, axis=-1)
+            cm_pred2 = tf.argmax(self.mean_predictions2, axis=-1) + 3
+            self.y_test = tf.concat([cm_pred1,cm_pred2],axis=0)
+            cm_true1 = tf.argmax(self.y1,axis=-1)
+            cm_true2 = tf.argmax(self.y2,axis=-1) + 3
+            self.y_pred = tf.concat([cm_true1,cm_true2],axis=0)
+        except:
+            cm_pred1 = tf.argmax(self.mean_predictions1, axis=-1)
+            self.y_test = cm_pred1
+            cm_true1 = tf.argmax(self.y1,axis=-1)
+            self.y_pred = cm_true1
 
         self.classification = classification_report(self.y_pred, self.y_test)    
         self.oa = accuracy_score(self.y_pred, self.y_test)*100

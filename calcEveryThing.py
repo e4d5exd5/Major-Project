@@ -41,7 +41,7 @@ def process_csv(csv_path):
 
 
 # Example usage:
-csv_path = 'E:/Engginearing/SAKEC/SEM 7/Major Project/ablation/table test/report.csv'
+csv_path = './ablation/table test/report.csv'
 result_df = process_csv(csv_path)
 
 # Print the result DataFrame

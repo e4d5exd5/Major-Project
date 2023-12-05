@@ -12,7 +12,7 @@ import random
 from tqdm.auto import tqdm
 
 
-def generateWindow(X: np.ndarray, Y: np.ndarray, patches: list, windowSize: int, numClasses:int, imageData: tuple, C: int = 16, K:int = 5):
+def generateWindow(X: np.ndarray, Y: np.ndarray, patches: list, windowSize: int, imageData: tuple, C, K):
 
     (IMAGE_HEIGHT,IMAGE_WIDTH,IMAGE_DEPTH,IMAGE_CHANNEL) = imageData
     
@@ -39,7 +39,7 @@ def generateWindow(X: np.ndarray, Y: np.ndarray, patches: list, windowSize: int,
 
 
 
-def predictImage(Data: Data, ProtoModel: Prototypical or None, imageData: tuple, N_TIMES, windowSize):
+def predictImage(Data: Data, ProtoModel: Prototypical , imageData: tuple, N_TIMES, windowSize):
     (IMAGE_HEIGHT,IMAGE_WIDTH,IMAGE_DEPTH,IMAGE_CHANNEL) = imageData
     X, Y = Data.createPatches()
     _, _, X_patchwise = Data.get_data()
@@ -53,7 +53,7 @@ def predictImage(Data: Data, ProtoModel: Prototypical or None, imageData: tuple,
             
     
 
-    epochObj = tqdm(generateWindow(X, Y, X_patchwise, windowSize, C, imageData), desc=f'Patch', total=((X.shape[0]//windowSize) * (X.shape[1] //windowSize)))
+    epochObj = tqdm(generateWindow(X, Y, X_patchwise, windowSize, imageData, C, K), desc=f'Patch', total=((X.shape[0]//windowSize) * (X.shape[1] //windowSize)))
     for x, y, queryLabels, queryPatches, supportLabels, supportPatches, w, h in epochObj:
         # print(x, y, len(queryLabels), queryPatches.shape, len(supportLabels), supportPatches.shape)
         loss, mean_predictions, mean_accuracy, classwise_mean_acc, y_preds = ProtoModel(supportPatches, queryPatches, supportLabels, queryLabels, K, C, len(queryLabels), training=False)
