@@ -46,6 +46,7 @@ def predictImage(Data: Data, ProtoModel: Prototypical , imageData: tuple, N_TIME
     C = Data.get_num_classes()
     X_shape = Data.get_dataset_shape()
     predictions = np.zeros((X_shape[0], X_shape[1]))
+    predictionsTrue = np.zeros((X_shape[0], X_shape[1]))
     K = 5
     all_preds = []
     all_y_preds = []
@@ -62,7 +63,12 @@ def predictImage(Data: Data, ProtoModel: Prototypical , imageData: tuple, N_TIME
         all_preds.extend(mean_predictions)
         all_y_preds.extend(y_preds)
     
-    return predictions, Y, all_preds, all_y_preds
+    for x in range(X_shape[0]):
+        for y in range(X_shape[1]):
+            if(Y[x, y] != 0):
+                predictionsTrue[x, y] = predictions[x, y]
+    
+    return predictions, predictionsTrue, Y, all_preds, all_y_preds
         
 
 
