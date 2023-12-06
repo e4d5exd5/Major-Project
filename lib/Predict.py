@@ -49,6 +49,7 @@ def predictImage(Data: Data, ProtoModel: Prototypical , imageData: tuple, N_TIME
     predictionsTrue = np.zeros((X_shape[0], X_shape[1]))
     K = 5
     all_preds = []
+    all_predsTrue = []
     all_y_preds = []
     # print(predictions.shape)
             
@@ -62,13 +63,14 @@ def predictImage(Data: Data, ProtoModel: Prototypical , imageData: tuple, N_TIME
         predictions[x:x+w,  y:y+h] = np.reshape(correctIndices.numpy(), (w, h))
         all_preds.extend(mean_predictions)
         all_y_preds.extend(y_preds)
-    
     for x in range(X_shape[0]):
         for y in range(X_shape[1]):
             if(Y[x, y] != 0):
                 predictionsTrue[x, y] = predictions[x, y]
-    
-    return predictions, predictionsTrue, Y, all_preds, all_y_preds
+
+    all_predsTrue = predictionsTrue.reshape((X_shape[0] * X_shape[1]))
+    all_predsTrue = all_predsTrue.tolist()
+    return predictions, predictionsTrue, Y, all_preds, all_predsTrue, all_y_preds
         
 
 
