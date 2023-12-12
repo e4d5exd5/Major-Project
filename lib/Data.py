@@ -103,7 +103,6 @@ class Data:
         
     def get_dataset_shape(self):
         return self.datasetShape
-    
     def get_num_classes(self):
         return self.dataset_meta['num_classes']
     def load_defaults(self):

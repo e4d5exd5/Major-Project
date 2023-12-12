@@ -12,6 +12,7 @@ metadata = {
       "key": "indian_pines_gt"
     },
     "target_names": [
+      "Unclassified",
       "Alfalfa",
       "Corn-notill",
       "Corn-mintill",
@@ -48,6 +49,7 @@ metadata = {
       "key": "salinas_gt"
     },
     "target_names": [
+      "Unclassified",
       "Brocoli_green_weeds_1",
       "Brocoli_green_weeds_2",
       "Fallow",
@@ -84,6 +86,7 @@ metadata = {
       "key": "paviaU_gt"
     },
     "target_names": [
+      "Unclassified",
       "Asphalt",
       "Meadows",
       "Gravel",

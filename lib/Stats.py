@@ -10,15 +10,18 @@ from operator import truediv
 
 class Stats:
 
-    def __init__(self, mc_predictions1, mc_predictions2, y1, y2):
+    def __init__(self, mc_predictions1, mc_predictions2, y1, y2, y_test=None, y_pred=None, preprocessing=True):
         self.mean_predictions1 = mc_predictions1
         self.mean_predictions2 = mc_predictions2
         self.y1 = y1
         self.y2 = y2
+        self.y_pred = y_pred
+        self.y_test = y_test
+        if preprocessing:
+            self.preprocessing()
         self.get_accuracy()
 
-
-    def get_accuracy(self):
+    def preprocessing(self):
         # Accuracy
         try:
             self.y_test = tf.concat([self.mean_predictions1,self.mean_predictions2],axis=0)
@@ -31,6 +34,7 @@ class Stats:
                     tf.cast(tf.argmax(self.y_test, axis=-1), tf.int32), 
                     tf.cast(tf.argmax(self.y_pred,axis=-1), tf.int32)), tf.float32)
         o_acc = tf.reduce_mean(correct_pred) 
+        
         try:
             cm_pred1 = tf.argmax(self.mean_predictions1, axis=-1)
             cm_pred2 = tf.argmax(self.mean_predictions2, axis=-1) + 3
@@ -43,13 +47,9 @@ class Stats:
             self.y_test = cm_pred1
             cm_true1 = tf.argmax(self.y1,axis=-1)
             self.y_pred = cm_true1
-        try:
-            self.classification = classification_report(self.y_pred, self.y_test)   
-        except:
-            self.y_test = self.mean_predictions1
-        self.y_pred = self.y_pred + 1
-        # print(set(self.y_test.tolist()) , set(self.y_pred.numpy().tolist()))
-        self.classification = classification_report(self.y_pred, self.y_test)   
+
+    def get_accuracy(self):
+        self.classification = classification_report(self.y_pred, self.y_test)    
         self.oa = accuracy_score(self.y_pred, self.y_test)*100
         self.confusion = confusion_matrix(self.y_pred,self.y_test)
         self.each_aa, self.aa = self.AA_andEachClassAccuracy()
@@ -69,7 +69,7 @@ class Stats:
         print('\n')
         print('{}'.format(confusion))
     
-    def saveReport(self, PATH, FINAL_REPORT_PATH, dataset, n_times, tau, run, encoder, all=True):
+    def saveReport(self, PATH, FINAL_REPORT_PATH, dataset, n_times, tau, run, encoder, predict=False):
         classification = str(self.classification)
         confusion = str(self.confusion)
         print(f'OA {self.oa:.2f} | KA {self.kappa:.2f} | AA {self.aa:.2f}')
@@ -93,11 +93,11 @@ class Stats:
             x_file.write('\n')
             x_file.write('{}'.format(confusion))
             x_file.close()
-
-        if(all): return
-        with open(FINAL_REPORT_PATH, 'a', newline='') as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerow([dataset, encoder, tau, n_times, run+1, f'{self.oa:.2f}', f'{self.kappa:.2f}', f'{self.aa:.2f}'])
+        
+        if not predict:
+            with open(FINAL_REPORT_PATH, 'a', newline='') as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerow([dataset, encoder, tau, n_times, run+1, f'{self.oa:.2f}', f'{self.kappa:.2f}', f'{self.aa:.2f}'])
         
     def AA_andEachClassAccuracy(self):
         counter = self.confusion.shape[0]
