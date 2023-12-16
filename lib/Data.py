@@ -123,13 +123,7 @@ class Data:
         return self.dataset_meta['target_names']
 
 if __name__ == '__main__':
-    d = Data('IP', 30, 1)
-    _X, _Y = d.get_original_data()
-    print(set(np.reshape(_Y, (145*145)).tolist()))
+    d = Data('PU', 30, 1)
     X, Y, patches = d.get_data()
-    print(len(patches))
-    s = 0
     for i in range(len(patches)):
-        s += len(patches[i])
         print(i, len(patches[i]))
-    print(s, 145*145)
