@@ -1,0 +1,29 @@
+Problem with testing.
+
+How original testing was done:
+
+1. For IP and SA there are total 6 classes to test. They were divided into 2 groups of 3 classes each.
+2. While creating testing episode, for each class, 1st 5 patches were taken as support set and remaining all pacthes were taken as query set. Query was shuffled randomly.
+3. These 2 groups were tested separately, and at the end of the episode the results we combined.
+4. To get the accuracy for the model, we only considerd the last episode of the testing.
+
+Drawbacks of this testing:
+The results will not vary as the suport set is same for all the episodes.
+Time taken for testing is more.
+The final accuracy is not the actual accuracy of the model.
+
+How testing is done now:
+1. Support set, 5 patches are selected randomly for each class.
+2. Query set, 15 instead of all,  patches are selected randomly for each class. 
+3. For each episode we record the accuracy and at the end we return the best accuracy.
+
+Drawbacks of this testing:
+The results will vary as the suport set is different for all the episodes.
+Time taken for testing is less.
+The final accuracy is not the actual accuracy of the model, because when we try to visualize the patches, we can see that the patches are not of the same class.
+
+How to improve the testing ??
+
+Class-specific normalization or thresholds: You could apply normalization or thresholding techniques to improve accuracy for specific classes, especially those with high variance or misclassifications at the edges.
+Confidence-based filtering: Consider filtering predictions based on their confidence scores, potentially focusing on high-confidence predictions to improve overall accuracy.
+Ensemble methods: Combining predictions from multiple models or different training configurations can sometimes lead to improved accuracy and robustness.
