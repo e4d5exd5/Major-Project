@@ -1,0 +1,60 @@
+==================================================================
+                    Queries Regarding the Code
+==================================================================
+                    Testing Code Issues/Queries
+------------------------------------------------------------------
+1. Why the support set is the same for all the episodes? 1st 5 
+    without randomization.
+2. Why the query set conists rest all patches except the support 
+    set? patches with randomization.
+3. Why the need for splitting the testing episode into 2 parts?
+4. Why the statistics are calculated using only the last episode?
+------------------------------------------------------------------
+              Testing Code issues I was able to solve
+------------------------------------------------------------------
+1. Randomized selection of support set.
+2. Instead of using remaining patches as query set, I select 15 
+    patches at random.
+3. I was able to modify the Prototypical Network code to work 
+    with 16 classes at a time. Hence we can use the same code 
+    for testing.
+4. My solution is to check the OA for each episode and return the 
+    best one.
+    -> Detail:
+        There are 2 main output from the Prototypical Network for 
+        testing.
+        - y_pred: Predicted class for each query patch.
+        - y_label: True class for each query patch.
+        Hence we are able to calculate the OA for each episode, 
+        and then only I am able to return the best OA with 
+        respective y_pred & y_label.
+        But, I am not sure if this is the correct way to do it, 
+        because when I predict the whole image, the prediction 
+        doesn't match with the ground truth.
+        I know that this is not the best way to do it.
+        
+        A solution is to take the mean and return the mean.
+        The problem with this is that, I am not storing all the 
+        y_pred & y_label for each episode, hence I am not able to 
+        calculate the mean.
+        And even if I do that, If the mean value doesn't have a 
+        corresponding y_pred & y_label, then it is useless.
+        Hence I am not sure how to proceed with this.
+------------------------------------------------------------------
+                    Issues with visualizing the results
+------------------------------------------------------------------
+I am able to visualize the prediction for each dataset.
+
+But, when I analyse the image I see that the model can identify
+almost majority of the patches (not image patches/pixels but 
+patches of class) correctly, the problem is that few pixles in the
+center or the edges are misclassified.
+
+So my question is, Can I do some post processing to get rid of
+these misclassified pixels?
+
+So options for post processing are:
+1. Majority voting
+2. Median filtering
+3. K fold cross validation
+==================================================================
