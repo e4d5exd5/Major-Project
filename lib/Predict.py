@@ -9,6 +9,7 @@ except:
 import tensorflow as tf
 import numpy as np
 import random
+from scipy import stats
 from tqdm.auto import tqdm
 
 def generateSupportSet(patches: list, imageData: tuple, C, K):
@@ -76,11 +77,9 @@ def predictImage(Data: Data, ProtoModel: Prototypical , imageData: tuple, N_TIME
         
         # Calulate Majority Voting Here
         votes_tensor = tf.stack(votes, axis=-1)  # Stack the votes along the last axis
-        majority_votes, _ = tf.unique_with_counts(tf.reshape(votes_tensor, [-1]))  # Count occurrences of each class
-        majority_class = tf.argmax(majority_votes) + 1  # Get the class with the maximum count
-
+        majority_classes, _ = stats.mode(votes_tensor, axis=-1)
         # Fill in the predictions with the majority voting result
-        predictions[x:x+w, y:y+h] = majority_class.numpy()
+        predictions[x:x+w, y:y+h] = np.reshape(majority_classes, (w, h))
        
     
     y_test = []
