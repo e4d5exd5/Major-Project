@@ -30,10 +30,9 @@ class Prototypical(Model):
         self.w, self.h, self.d, self.c = w, h, d, c
         self.encoder = model
         self.MC_LOSS_WEIGHT = MC_LOSS_WEIGHT
-        self.TAU = TAU
         self.n_times = N_TIMES
 
-    def call(self, support, query, support_labels, query_labels, K, C, N,training=True):
+    def call(self, support, query, support_labels, query_labels, K, C, N,training=True, TAU=1):
         '''                                                     
         support: support images (25, 11, 11, 30, 1)
         query: query images (75, 11, 11, 30, 1)
@@ -79,7 +78,7 @@ class Prototypical(Model):
 
             # If testing then apply Temprature Scaling
             if not training:
-                distances = distances / self.TAU
+                distances = distances / TAU
             
             # Calculate predictions by applying softmax on distances
             predictions = tf.nn.softmax(-distances, axis=-1)
