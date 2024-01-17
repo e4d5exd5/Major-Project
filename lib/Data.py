@@ -13,7 +13,7 @@ except:
 import h5py
 class Data:
     
-    def __init__(self, dataset, pca_components=30, windowSize=11):
+    def __init__(self, dataset, pca_components=30, windowSize=11, drive=False):
         self.dataset = dataset
         self.X: np.ndarray
         self.Y: np.ndarray
@@ -22,6 +22,8 @@ class Data:
         self.datasetShape: tuple
         self.patches: list
         self.windowSize = windowSize
+        self.drive = drive
+        self.path = os.getcwd() if drive is False else '/content/drive/MyDrive/HSI/'
         self.load_json()
         self.load_data()
         self.apply_pca(pca_components)
@@ -44,12 +46,20 @@ class Data:
     
     def get_original_data(self):
         try:
-            X = sio.loadmat(f'{os.getcwd()}\\Datasets\\{self.dataset_meta["name"]}{self.dataset_meta["data"]["suffix"]}{self.dataset_meta["data"]["ext"]}')[ self.dataset_meta["data"]["key"] ]
-            Y = sio.loadmat(f'{os.getcwd()}\\Datasets\\{self.dataset_meta["name"]}{self.dataset_meta["label"]["suffix"]}{self.dataset_meta["label"]["ext"]}')[ self.dataset_meta["label"]["key"] ]
+            if(self.drive):
+                X = sio.loadmat(f'{self.path}/Datasets/{self.dataset_meta["name"]}{self.dataset_meta["data"]["suffix"]}{self.dataset_meta["data"]["ext"]}')[ self.dataset_meta["data"]["key"] ]
+                Y = sio.loadmat(f'{self.path}/Datasets/{self.dataset_meta["name"]}{self.dataset_meta["label"]["suffix"]}{self.dataset_meta["label"]["ext"]}')[ self.dataset_meta["label"]["key"] ]
+            else:
+                X = sio.loadmat(f'{self.path}\\Datasets\\{self.dataset_meta["name"]}{self.dataset_meta["data"]["suffix"]}{self.dataset_meta["data"]["ext"]}')[ self.dataset_meta["data"]["key"] ]
+                Y = sio.loadmat(f'{self.path}\\Datasets\\{self.dataset_meta["name"]}{self.dataset_meta["label"]["suffix"]}{self.dataset_meta["label"]["ext"]}')[ self.dataset_meta["label"]["key"] ]
             return X, Y
         except Exception as e:
-            data = h5py.File(f'{os.getcwd()}\\Datasets\\{self.dataset_meta["name"]}{self.dataset_meta["data"]["suffix"]}{self.dataset_meta["data"]["ext"]}', 'r')
-            label = h5py.File(f'{os.getcwd()}\\Datasets\\{self.dataset_meta["name"]}{self.dataset_meta["label"]["suffix"]}{self.dataset_meta["label"]["ext"]}', 'r')
+            if(drive):
+                data = h5py.File(f'{self.path}/Datasets/{self.dataset_meta["name"]}{self.dataset_meta["data"]["suffix"]}{self.dataset_meta["data"]["ext"]}', 'r')
+                label = h5py.File(f'{self.path}/Datasets/{self.dataset_meta["name"]}{self.dataset_meta["label"]["suffix"]}{self.dataset_meta["label"]["ext"]}', 'r')
+            else:
+                data = h5py.File(f'{self.path}\\Datasets\\{self.dataset_meta["name"]}{self.dataset_meta["data"]["suffix"]}{self.dataset_meta["data"]["ext"]}', 'r')
+                label = h5py.File(f'{self.path}\\Datasets\\{self.dataset_meta["name"]}{self.dataset_meta["label"]["suffix"]}{self.dataset_meta["label"]["ext"]}', 'r')
             X = data[self.dataset_meta["data"]["key"]]
             Y = label[self.dataset_meta["label"]["key"]]
             X = np.transpose(np.array(X), axes=[2, 1, 0])
