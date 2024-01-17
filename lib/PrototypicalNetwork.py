@@ -30,10 +30,9 @@ class Prototypical(Model):
         self.w, self.h, self.d, self.c = w, h, d, c
         self.encoder = model
         self.MC_LOSS_WEIGHT = MC_LOSS_WEIGHT
-        self.TAU = TAU
         self.n_times = N_TIMES
 
-    def call(self, support, query, support_labels, query_labels, K, C, N,training=True):
+    def call(self, support, query, support_labels, query_labels, K, C, N,training=True, TAU=1):
         '''                                                     
         support: support images (25, 11, 11, 30, 1)
         query: query images (75, 11, 11, 30, 1)
@@ -44,6 +43,7 @@ class Prototypical(Model):
         N: number of query images per class
         n_times: number of times to pass the query images for variance calculation
         training: True if training, False if testing
+        Tau: Temperature Scaling
         '''
         cat = tf.concat([support,query], axis=0)
         loss = 0
@@ -79,7 +79,7 @@ class Prototypical(Model):
 
             # If testing then apply Temprature Scaling
             if not training:
-                distances = distances / self.TAU
+                distances = distances / TAU
             
             # Calculate predictions by applying softmax on distances
             predictions = tf.nn.softmax(-distances, axis=-1)
@@ -129,7 +129,7 @@ class Prototypical(Model):
             
             
             '''
-            Explaination for classwise_mean_acc:
+            Explanation for classwise_mean_acc:
             
             What we need to get?
                 We need to get the mean accuracy for each class.

@@ -41,7 +41,7 @@ def process_csv(csv_path):
 
 
 # Example usage:
-csv_path = './ablation/table test/report.csv'
+csv_path = './ablation/table 2 same model/report.csv'
 result_df = process_csv(csv_path)
 
 # Print the result DataFrame

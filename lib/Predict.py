@@ -47,7 +47,7 @@ def generateWindow(X: np.ndarray, Y: np.ndarray, patches: list, windowSize: int,
 
 
 
-def predictImage(Data: Data, ProtoModel: Prototypical , imageData: tuple, N_TIMES, windowSize, VotingTimes=5, RandomSupport=True):
+def predictImage(Data: Data, ProtoModel: Prototypical , imageData: tuple, N_TIMES, windowSize, TAU, VotingTimes=5, RandomSupport=True):
     (IMAGE_HEIGHT,IMAGE_WIDTH,IMAGE_DEPTH,IMAGE_CHANNEL) = imageData
     X, Y = Data.createPatches()
     _, _, X_patchwise = Data.get_data()
@@ -69,7 +69,7 @@ def predictImage(Data: Data, ProtoModel: Prototypical , imageData: tuple, N_TIME
         votes = []
         
         for i in range(VotingTimes):
-            loss, mean_predictions, mean_accuracy, classwise_mean_acc, y_preds = ProtoModel(supportPatches, queryPatches, supportLabels, queryLabels, K, C, len(queryLabels), training=False)
+            loss, mean_predictions, mean_accuracy, classwise_mean_acc, y_preds = ProtoModel(supportPatches, queryPatches, supportLabels, queryLabels, K, C, len(queryLabels), training=False, TAU=TAU)
             correctIndices = tf.cast(tf.argmax(mean_predictions, axis=-1) + 1, tf.int32) 
             votes.append(correctIndices)
             if(RandomSupport):
