@@ -7,4 +7,5 @@ FSL based HSI Classification
 
 Final Name
 SA in SPN for FSL based HSI Classification
+Self Attention In Stable Prototypical Network for Few Shot Learning based Hyperspectral Image Classification
 SASPNet
