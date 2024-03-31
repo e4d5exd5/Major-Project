@@ -5,6 +5,7 @@ from sklearn.decomposition import PCA
 import numpy as np
 import pandas as pd
 import json
+import spectral
 import os
 import spectral
 from matplotlib import patches
