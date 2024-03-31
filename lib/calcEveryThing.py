@@ -1,13 +1,46 @@
 import pandas as pd
 import numpy as np
+import os
 
-
-def process_csv(csv_path):
+def load_csv(csv_path):
     # Read CSV into a DataFrame
     df = pd.read_csv(csv_path)
 
     # Remove leading and trailing spaces from column names
     df.columns = df.columns.str.strip()
+    
+    return df
+
+
+def load_total_csv(folder_path, df):
+
+    df.drop(columns=['OA', 'KA', 'AA'], axis=1,inplace=True)
+    newdf = pd.DataFrame(columns=['OA', 'KA', 'AA'])
+    folders = os.listdir(folder_path)
+    folders.sort(key=int)
+    for folder in folders:
+        n_times = int(folder)
+        if os.path.isdir(folder_path + folder):
+            files = os.listdir(folder_path + folder)
+            for file in files:
+                if file.endswith('_post_tune_reportTotal.txt'):
+                    file_path = folder_path + folder + '/' + file
+                    run = int(file.split('_')[0])
+                    with open(file_path, 'r') as f:
+                        lines = f.readlines()
+                        OA = float(lines[3].split()[0])
+                        KA = float(lines[4].split()[0])
+                        AA = float(lines[5].split()[0])
+                        newdf.loc[len(newdf.index)] = [OA, KA, AA]
+    df = pd.concat([df, newdf], axis=1)
+    
+    # print(df)
+    return df
+                        
+                        
+
+def process_csv(df):
+    
 
     # Find the row with the maximum 'OA', 'KA', and 'AA' with priority
     result_df = df.loc[df.groupby(['dataset', 'encoder', 'tau', 'n_times'])[
@@ -40,9 +73,45 @@ def process_csv(csv_path):
     return result_df
 
 
-# Example usage:
-csv_path = './ablation/table 2 same model/report.csv'
-result_df = process_csv(csv_path)
 
-# Print the result DataFrame
-print(result_df)
+def main():
+    # Example usage:
+    csv_path = './ablation_review/tr 40 tu 15/report.csv'
+    folder_path = './ablation_review/tr 40 tu 15/IP/conv_sa/1.8/'
+
+    input_df = load_csv(csv_path)
+    input_total_df = load_total_csv(folder_path, input_df.copy())
+    print("Actual Testing Result")
+    result_actual_df = process_csv(input_df)
+    print(result_actual_df)
+    print("\n")
+    print("Post Tune Visualization Result")
+    result_post_df = process_csv(input_total_df)
+    print(result_post_df)
+
+    # Print the result DataFrame
+    # print(result_df)
+    
+    
+if __name__ == '__main__':
+    main()
+
+
+46, 1428, 830, 237, 483, 730, 28, 478, 20, 972, 2455, 593, 205, 1265, 386, 93, 10249
+
+1	46
+2	1428
+3	830
+4	237
+5	483
+6	730
+7	28
+8	478
+9	20
+10	972
+11	2455
+12	593
+13	205
+14	1265
+15	386
+16	93
