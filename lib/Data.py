@@ -5,6 +5,7 @@ from sklearn.decomposition import PCA
 import numpy as np
 import pandas as pd
 import json
+import spectral
 import os
 try:
     from lib.Metadata import metadata
@@ -133,7 +134,9 @@ class Data:
         return self.dataset_meta['target_names']
 
 if __name__ == '__main__':
-    d = Data('PU', 30, 1)
-    X, Y, patches = d.get_data()
-    for i in range(len(patches)):
-        print(i, len(patches[i]))
+    d = Data('IP', 30, 1)
+    X, Y = d.get_original_data()
+    CWD = os.getcwd()
+    gt_path = CWD + '\\GT\\IP.png'
+    spectral.save_rgb(gt_path, Y.astype(int), colors=spectral.spy_colors, format='png')
+    
