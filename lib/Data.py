@@ -6,6 +6,9 @@ import numpy as np
 import pandas as pd
 import json
 import os
+import spectral
+from matplotlib import patches
+import matplotlib.pyplot as plt
 try:
     from lib.Metadata import metadata
 except:
@@ -54,7 +57,7 @@ class Data:
                 Y = sio.loadmat(f'{self.path}\\Datasets\\{self.dataset_meta["name"]}{self.dataset_meta["label"]["suffix"]}{self.dataset_meta["label"]["ext"]}')[ self.dataset_meta["label"]["key"] ]
             return X, Y
         except Exception as e:
-            if(drive):
+            if(self.drive):
                 data = h5py.File(f'{self.path}/Datasets/{self.dataset_meta["name"]}{self.dataset_meta["data"]["suffix"]}{self.dataset_meta["data"]["ext"]}', 'r')
                 label = h5py.File(f'{self.path}/Datasets/{self.dataset_meta["name"]}{self.dataset_meta["label"]["suffix"]}{self.dataset_meta["label"]["ext"]}', 'r')
             else:
@@ -133,7 +136,21 @@ class Data:
         return self.dataset_meta['target_names']
 
 if __name__ == '__main__':
-    d = Data('PU', 30, 1)
-    X, Y, patches = d.get_data()
-    for i in range(len(patches)):
-        print(i, len(patches[i]))
+    dataset = ['IP', 'PU', 'SA']
+    for ds in dataset:
+        d = Data(ds, 30, 11)
+        target_names = d.get_target_names()
+        
+        labelPatches = [patches.Patch(color=spectral.spy_colors[x]/255., label=target_names[x]) for x in range(len(target_names))]
+        
+        
+        
+        legend_plt = plt.legend(handles=labelPatches, ncol=1, fontsize='medium', loc='upper center')
+        legend_plt.get_frame().set_linewidth(0)
+        plt.axis('off')
+        plt.tight_layout()
+        plt.savefig(os.getcwd() + '\\legends\\legend_1col_' +
+                    ds + '.png', bbox_inches='tight', dpi=300)
+        # spectral.save_rgb(os.getcwd() + '\\legends\\legend_1col_'+ ds + '.png', Y.astype(
+        #     int), colors=spectral.spy_colors, format='png')
+        del d

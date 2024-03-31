@@ -133,9 +133,43 @@ metadata = {
       "Tennis Court",
       "Running Track"
     ],
-    "num_classes": 7,
+    "num_classes": 15,
     "training_classes": [1, 2, 4, 5, 7],
     "testing_classes": [0, 3, 6],
     "label_offset": 0
-  }
+  },
+  "BW": {
+      "name": "Botswana",
+      "data": {
+          "suffix": "",
+          "ext": ".mat",
+          "key": "Botswana"
+      },
+      "label": {
+          "suffix": "_gt",
+          "ext": ".mat",
+          "key": "Botswana_gt"
+      },
+      "target_names": [
+          "Unclassified",
+          "Water",
+          "Hippo grass",
+          "floodplain grasses 1",
+          "floodplain grasses 2",
+          "reedsl",
+          "riparian",
+          "firescar2",
+          "island interior",
+          "acacia woodlands",
+          "acacia shrublands",
+          "acacia grasslands",
+          "short mopane",
+          "mixed mopane",
+          "exposed soils"
+      ],
+      "num_classes": 14,
+      "training_classes": [1, 2, 4, 5, 7, 9, 10, 11, 13],
+      "testing_classes": [0, 3, 6, 8, 12],
+      "label_offset": 1
+  },
 }
