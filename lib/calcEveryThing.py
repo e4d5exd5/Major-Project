@@ -76,8 +76,8 @@ def process_csv(df):
 
 def main():
     # Example usage:
-    csv_path = './ablation_review/tr 40 tu 15/report.csv'
-    folder_path = './ablation_review/tr 40 tu 15/IP/conv_sa/1.8/'
+    csv_path = './ablation_review/tr 40 tu 15 1 shot/report.csv'
+    folder_path = './ablation_review/tr 40 tu 15 1 shot/IP/conv_sa/1.8/'
 
     input_df = load_csv(csv_path)
     input_total_df = load_total_csv(folder_path, input_df.copy())
@@ -96,22 +96,3 @@ def main():
 if __name__ == '__main__':
     main()
 
-
-46, 1428, 830, 237, 483, 730, 28, 478, 20, 972, 2455, 593, 205, 1265, 386, 93, 10249
-
-1	46
-2	1428
-3	830
-4	237
-5	483
-6	730
-7	28
-8	478
-9	20
-10	972
-11	2455
-12	593
-13	205
-14	1265
-15	386
-16	93

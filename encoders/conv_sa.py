@@ -19,10 +19,10 @@ def SelfAttention(x):
     proj_value  = layers.Conv2D(filters=channels, kernel_size=1)(x)
     proj_value = layers.Reshape((height * width, channels))(proj_value)
     
-    energy = layers.Dot(axes=(1, 2))([proj_query, proj_key])
+    energy = layers.Dot(axes=(1, 2))([proj_query, proj_key]) # 49 49
     
     attention = layers.Softmax(axis=-1)(energy)
-    attention = layers.Permute((2, 1))(attention)
+    attention = layers.Permute((2, 1))(attention) # 49 49
     
     out = layers.Dot(axes=(1, 2))([proj_value, attention])
     out = layers.Reshape((height, width, channels))(out)
@@ -86,7 +86,7 @@ def createModel(IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_DEPTH, IMAGE_CHANNEL):
 
     model = Model(inputs=input_layer, outputs=output_layer_7_dense)
     
-    print(model.summary())
+    # print(model.summary())
     
     return model
     
