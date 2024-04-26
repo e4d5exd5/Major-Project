@@ -1,0 +1,9 @@
+Actual Testing Results: 
+   dataset     encoder  tau  n_times     OA     KA     AA  OA_mean    OA_var  KA_mean    KA_var  AA_mean    AA_var
+0      IP  conv_no_sa  1.0       25  99.15  98.98  99.15   98.440  0.700133   98.130  1.004933   98.440  0.700133
+1      IP  conv_no_sa  1.8       25  99.56  99.47  99.56   97.598  1.332670   97.116  1.918780   97.598  1.332670
+
+Post Tune Visualization Result: 
+   dataset     encoder  tau  n_times         OA         KA         AA    OA_mean     OA_var    KA_mean     KA_var    AA_mean     AA_var
+0      IP  conv_no_sa    1       25  80.076105  77.518366  83.958408  74.344814  27.032311  71.260659  32.385196  80.961961   9.594343
+1      IP  conv_no_sa  1.8       25  80.807884  78.327153  86.182267  74.223827  27.766341  71.130234  33.261172  82.047773  16.982462
