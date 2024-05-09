@@ -143,32 +143,32 @@ if __name__ == '__main__':
     # print(X)
     # print(Y)
 
-    dataset = ['KSC']
+    dataset = ['KSC', 'BW']
     for ds in dataset:
         d = Data(ds, 30, 11)
         
-        X, Y, patches = d.get_data()
+        # X, Y, patches = d.get_data()
         labelPatches = d.get_target_names()
 
-        print(X.shape)
-        print(Y.shape)
-        print(len(patches))
-        s = 0
-        for i in range(len(patches)):
-            print(len(patches[i]))
-            s += len(patches[i])
-        print(s)
+        # print(X.shape)
+        # print(Y.shape)
+        # print(len(patches))
+        # s = 0
+        # for i in range(len(patches)):
+        #     print(len(patches[i]))
+        #     s += len(patches[i])
+        # print(s)
         
-        _, Y = d.get_original_data()
-        print(Y.shape)
-        spectral.save_rgb(os.getcwd() + '\\GT\\KSC.png', Y.astype(int), colors=spectral.spy_colors, format='png')
+        # _, Y = d.get_original_data()
+        # print(Y.shape)
+        # spectral.save_rgb(os.getcwd() + '\\GT\\KSC.png', Y.astype(int), colors=spectral.spy_colors, format='png')
+        
+        legend_plt = plt.legend(handles=labelPatches, ncol=1, fontsize='medium', loc='upper center')
+        legend_plt.get_frame().set_linewidth(0)
+        plt.axis('off')
+        plt.tight_layout()
+        plt.savefig(os.getcwd() + '\\legends\\legend_1col_' +
+                    ds + '.png', bbox_inches='tight', dpi=300)
+        spectral.save_rgb(os.getcwd() + '\\legends\\legend_1col_'+ ds + '.png', Y.astype(
+            int), colors=spectral.spy_colors, format='png')
         del d
-        
-        # legend_plt = plt.legend(handles=labelPatches, ncol=1, fontsize='medium', loc='upper center')
-        # legend_plt.get_frame().set_linewidth(0)
-        # plt.axis('off')
-        # plt.tight_layout()
-        # plt.savefig(os.getcwd() + '\\legends\\legend_1col_' +
-        #             ds + '.png', bbox_inches='tight', dpi=300)
-        # spectral.save_rgb(os.getcwd() + '\\legends\\legend_1col_'+ ds + '.png', Y.astype(
-        #     int), colors=spectral.spy_colors, format='png')

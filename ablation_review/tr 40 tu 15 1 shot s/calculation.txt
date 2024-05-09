@@ -1,0 +1,15 @@
+Actual Testing Results: 
+   dataset     encoder  tau  n_times     OA     KA     AA  OA_mean  OA_var  KA_mean  KA_var  AA_mean  AA_var
+0      SA  conv_no_sa  1.0       25  94.20  93.04  94.20    94.20     NaN    93.04     NaN    94.20     NaN
+1      SA  conv_no_sa  1.8       25  99.44  99.33  99.44    99.44     NaN    99.33     NaN    99.44     NaN
+2      SA     conv_sa  1.0       25  96.74  96.09  96.74    96.74     NaN    96.09     NaN    96.74     NaN
+3      SA     conv_sa  1.8        5  95.00  94.00  95.00    95.00     NaN    94.00     NaN    95.00     NaN
+4      SA     conv_sa  1.8       10  99.78  99.73  99.78    99.78     NaN    99.73     NaN    99.78     NaN
+5      SA     conv_sa  1.8       15  93.09  91.71  93.09    93.09     NaN    91.71     NaN    93.09     NaN
+6      SA     conv_sa  1.8       20  99.44  99.32  99.44    99.44     NaN    99.32     NaN    99.44     NaN
+7      SA     conv_sa  1.8       25  95.00  94.00  95.00    95.00     NaN    94.00     NaN    95.00     NaN
+
+Post Tune Visualization Result: 
+ Empty DataFrame
+Columns: [dataset, encoder, tau, n_times, OA, KA, AA, OA_mean, OA_var, KA_mean, KA_var, AA_mean, AA_var]
+Index: []

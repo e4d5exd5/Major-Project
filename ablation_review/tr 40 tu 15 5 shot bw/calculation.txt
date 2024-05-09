@@ -1,0 +1,12 @@
+Actual Testing Results: 
+   dataset  encoder  tau  n_times     OA     KA     AA    OA_mean    OA_var    KA_mean     KA_var    AA_mean    AA_var
+0      BW  conv_sa  1.8        1  97.70  97.12  97.70  95.647500  2.875358  94.557500   4.484425  95.647500  2.875358
+1      BW  conv_sa  1.8        5  98.34  97.92  98.34  95.876000  9.329380  94.846000  14.548380  95.876000  9.329380
+2      BW  conv_sa  1.8       10  99.64  99.55  99.64  96.642000  3.605670  95.802000   5.633570  96.642000  3.605670
+3      BW  conv_sa  1.8       15  98.14  97.67  98.14  96.200000  4.358250  95.246000   6.816930  96.200000  4.358250
+4      BW  conv_sa  1.8       20  99.40  99.25  99.40  98.216667  2.100833  97.773333   3.286633  98.216667  2.100833
+5      BW  conv_sa  1.8       25  99.71  99.64  99.71  99.710000       NaN  99.640000        NaN  99.710000       NaN
+
+Post Tune Visualization Result: 
+   dataset  encoder  tau  n_times         OA         KA         AA    OA_mean  OA_var    KA_mean  KA_var    AA_mean  AA_var
+0      BW  conv_sa  1.8       25  92.364532  91.741007  93.629302  92.364532     NaN  91.741007     NaN  93.629302     NaN

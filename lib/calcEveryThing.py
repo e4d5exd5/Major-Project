@@ -90,7 +90,7 @@ def process_csv(df):
 
 def main():
     # Example usage:
-    table = './ablation_review/tr 40 tu 15 5 shot ksc/'
+    table = './ablation_review/tr 40 tu 15 1 shot s/'
     csv_path = table + 'report.csv'
     folder_path = table + 'IP/conv_sa/1/'
     datasets = ['IP']
