@@ -1,0 +1,101 @@
+Prototypical Class
+
+While initializing, we need to pass:
+width, height, depth and channels (which is default to 1)
+depth is equals to no of PCA components.
+width and height is of the patch and not the whole image.
+
+
+The call function
+
+Inputs to the call function are:
+support: support images (25, 11, 11, 30, 1)
+query: query images (75, 11, 11, 30, 1)
+supppor_labels: support labels (25, 5)
+query_labels: query labels (75, 5)
+K: number of support images per class
+C: number of classes
+N: number of query images per class
+n_times: number of times to pass the query images for variance calculation
+training: True if training, False if testing
+Tau: Temperature Scaling
+
+
+
+
+To generate the embbedings for support and query, instead of pass them separatly, 
+concatanate and pass it at once and after generation separate it.
+
+Firstly, create a 1 Hot Table for the query labels [do not explain it] which will be later used for 
+loss calculation.
+
+After generating the embedings and sperating, 
+support are reshaped from (C * K) x D to C x K x D, ie each class has K samples, each of 128 embeddings.
+
+Take the mean of the K samples for each class from the support. The shape becomes C x D.
+
+Then we calculate the distances between support and query.
+the shape returne is (N * C x N)
+
+calcualte the log softmax of negative distance.
+
+lastly we calculate the loss by comparing the log softmax distances to the 1 Hot Table initlay created.
+
+
+if performing training divide the log softmax distance with Tau
+
+Finally the precitions are softmax of negative disstances
+
+append the negative loss to a global loss variable for this batch and also append the predictions.
+
+From generating the embedings to appending the loss, we perfom it N Times.
+
+
+We perfom this N times because, to achive a stable predictions [please read SPN and add stuff]
+
+
+later we perform thing based whether we are performing training or testing.
+
+
+If traning, 
+we reshape all the predictions ad convert them into tensors for fast calcualtions
+we calculate the standard deviation of all the prediction.
+we calculate the standard deviation of std of prediction multipled with the 1 Hot Table.
+
+we add the standard deviation multiple to the mc_loss_weight  to the global loss.
+
+we calcualte the mean of the preictions which will be later used to calculate the accuracy.
+
+lastly we compare the mean  with the 1 hot table.
+
+we get the mean_accuracy.
+
+
+
+If testing,
+
+Calcuate the mean of the prediction.
+get the indices of the max value in the mean preictions.
+
+again like training, we calcuate the mean accuracy by comparing mean preictions and 1 hot table.
+
+then we calculate class wise mean accuracy
+
+            Explanation for classwise_mean_acc:
+            
+            What we need to get?
+                We need to get the mean accuracy for each class.
+            
+            How to get it?
+                We loop over all the query patches.
+                x is the index of the true class of the current query patch.
+                We check if the index of max probability is equal to the true class index.
+                if yes, we append 1 to the list of correct predictions for the current class.
+                if no, we append 0 to the list of correct predictions for the current class.
+                
+                After the loop, we calculate the mean accuracy for each class.
+                To do this, we simply divide the number of correct predictions for each class by the total number of predictions for each class.
+                    where sum(acc_list) represents the number of correct predictions for the current class.
+                    and len(acc_list) represents the total number of predictions for the current class.
+            
+            And done we have the mean accuracy for each class.

@@ -60,7 +60,7 @@ class Prototypical(Model):
             z = self.encoder(cat)
 
             # Reshape embeddings to separate support and query embeddings.
-            # For prototypes, we reshape C x K embeddings to C x K x D, ie. each class has K examples, each of D dimensions.
+            # For prototypes, we reshape (C * K) x D embeddings to C x K x D, ie. each class has K examples, each of D dimensions.
             z_support = tf.reshape(z[:C * K],[C, K, z.shape[-1]])
             # For query, we simply take the remaining embeddings.
             z_query = z[C * K:]
@@ -180,3 +180,4 @@ class Prototypical(Model):
     def load(self, model_path):
         self.encoder(tf.zeros([1, self.w, self.h, self.c]))
         self.encoder.load_weights(model_path)
+

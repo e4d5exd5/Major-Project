@@ -7,7 +7,8 @@ def SelfAttention(x):
     
     batch_size, height, width, channels = x.shape
     gamma = K.variable(value=[0.0], dtype='float32', name='gamma')
-    # gamma = tf.expand_dims(gamma, axis=1)
+    gamma = tf.expand_dims(gamma, axis=1)
+    # print(gamma.shape)
     proj_query = layers.Conv2D(filters=channels//8, kernel_size=1)(x)
     proj_query = layers.Reshape((height * width, channels // 8))(proj_query)
     proj_query = layers.Permute((2, 1))(proj_query)
@@ -87,7 +88,8 @@ def createModel(IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_DEPTH, IMAGE_CHANNEL):
     model = Model(inputs=input_layer, outputs=output_layer_7_dense)
     
     print(model.summary())
-    
+    tf.keras.utils.plot_model(model, to_file='model.png', show_shapes=True)
     return model
     
-    
+if __name__ == '__main__':
+    createModel(11, 11, 30, 1)
