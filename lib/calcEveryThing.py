@@ -12,30 +12,44 @@ def load_csv(csv_path):
     return df
 
 
-def load_total_csv(folder_path, df):
+def load_total_csv(folder_path):
 
-    df.drop(columns=['OA', 'KA', 'AA'], axis=1,inplace=True)
-    newdf = pd.DataFrame(columns=['OA', 'KA', 'AA'])
-    folders = os.listdir(folder_path)
-    folders.sort(key=int)
-    for folder in folders:
-        n_times = int(folder)
-        if os.path.isdir(folder_path + folder):
-            files = os.listdir(folder_path + folder)
-            for file in files:
-                if file.endswith('_post_tune_reportTotal.txt'):
-                    file_path = folder_path + folder + '/' + file
-                    run = int(file.split('_')[0])
-                    with open(file_path, 'r') as f:
-                        lines = f.readlines()
-                        OA = float(lines[3].split()[0])
-                        KA = float(lines[4].split()[0])
-                        AA = float(lines[5].split()[0])
-                        newdf.loc[len(newdf.index)] = [OA, KA, AA]
-    df = pd.concat([df, newdf], axis=1)
+    newdf = pd.DataFrame(columns=['dataset', 'encoder', 'tau', 'n_times', 'run','OA', 'KA', 'AA'])
+    ds_folders = os.listdir(folder_path)
+    for ds_folder in ds_folders:
+        dataset = ds_folder
+        if not os.path.isdir(folder_path + ds_folder):
+            continue
+        enc_folders = os.listdir(folder_path + ds_folder)
+        for enc_folder in enc_folders:
+            encoder = enc_folder
+            if not os.path.isdir(folder_path + ds_folder + '/' + enc_folder):
+                continue
+            tau_folders = os.listdir(folder_path + ds_folder + '/' + enc_folder)
+            tau_folders.sort(key=float)
+            for tau_folder in tau_folders:
+                tau = tau_folder
+                if not os.path.isdir(folder_path + ds_folder + '/' + enc_folder + '/' + tau_folder):
+                    continue
+                folders = os.listdir(folder_path + ds_folder + '/' + enc_folder + '/' +tau_folder)    
+                folders.sort(key=int)
+                for folder in folders:
+                    n_times = int(folder)
+                    if os.path.isdir(folder_path + ds_folder + '/' + enc_folder + '/' + tau_folder + '/' + folder):
+                        files = os.listdir(folder_path + ds_folder + '/' + enc_folder + '/' + tau_folder + '/' + folder)
+                        for file in files:
+                            if file.endswith('_post_tune_reportTotal.txt'):
+                                file_path = folder_path + ds_folder + '/' + enc_folder + '/' + tau_folder + '/' + folder + '/' + file
+                                run = int(file.split('_')[0])
+                                with open(file_path, 'r') as f:
+                                    lines = f.readlines()
+                                    OA = float(lines[3].split()[0])
+                                    KA = float(lines[4].split()[0])
+                                    AA = float(lines[5].split()[0])
+                                    newdf.loc[len(newdf.index)] = [dataset, encoder, tau, n_times, run, OA, KA, AA]
     
     # print(df)
-    return df
+    return newdf
                         
                         
 
@@ -76,24 +90,36 @@ def process_csv(df):
 
 def main():
     # Example usage:
-    csv_path = './ablation_review/tr 40 tu 15/report.csv'
-    folder_path = './ablation_review/tr 40 tu 15/IP/conv_sa/1.8/'
+    table = './ablation_review/tr 40 tu 15 5 shot ksc/'
+    csv_path = table + 'report.csv'
+    folder_path = table + 'IP/conv_sa/1/'
+    datasets = ['IP']
+    taus = ['1', '1.8']
+    encoders = ['conv_no_sa']
 
     input_df = load_csv(csv_path)
-    input_total_df = load_total_csv(folder_path, input_df.copy())
+    input_df.columns = ['dataset','encoder','tau','n_times','run','OA','KA','AA']
     print("Actual Testing Result")
     result_actual_df = process_csv(input_df)
     print(result_actual_df)
     print("\n")
-    print("Post Tune Visualization Result")
+    with open(table + 'calculation.txt', '+a') as file:
+        file.write('Actual Testing Results: \n ')
+        file.write(result_actual_df.to_string(header=True, index=True))
+        
+    input_total_df = load_total_csv(table)
+    print("Post Tune Visualization Result:")
     result_post_df = process_csv(input_total_df)
     print(result_post_df)
-
+    with open(table + 'calculation.txt', '+a') as file:
+        file.write('\n\nPost Tune Visualization Result: \n ')
+        file.write(result_post_df.to_string(header=True, index=True))
+        
+                
     # Print the result DataFrame
     # print(result_df)
     
     
 if __name__ == '__main__':
     main()
-
 

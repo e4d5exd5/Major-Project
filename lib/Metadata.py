@@ -108,16 +108,16 @@ metadata = {
   },
   
   "HU": {
-    "name": "Houston13",
+    "name": "Houston",
     "data": {
       "suffix": "",
       "ext": ".mat",
-      "key": "ori_data"
+      "key": "houston"
     },
     "label": {
-      "suffix": "_7gt",
+      "suffix": "_gt",
       "ext": ".mat",
-      "key": "map"
+      "key": "houston_gt_tr"
     },
     "target_names": [
       "Unclassified",
@@ -138,8 +138,8 @@ metadata = {
       "Running Track"
     ],
     "num_classes": 15,
-    "training_classes": [1, 2, 4, 5, 7],
-    "testing_classes": [0, 3, 6],
+    "training_classes": [0, 2, 4, 6, 8, 10, 12, 13, 14],
+    "testing_classes": [1, 3, 5, 7, 9, 11],
     "label_offset": 0
   },
   "BW": {
@@ -176,4 +176,39 @@ metadata = {
       "testing_classes": [0, 3, 6, 8, 12],
       "label_offset": 1
   },
+  "KSC": {
+      "name": "KSC",
+      "data": {
+          "suffix": "_corrected",
+          "ext": ".mat",
+          "key": "KSC"
+      },
+      "label": {
+          "suffix": "_gt",
+          "ext": ".mat",
+          "key": "KSC_gt"
+      },
+      "target_names": [
+          "Unclassified",
+          "Scrub",
+          "Willow Swamp",
+          "Cabbage Palm Hammock",
+          "Cabbage Palm/Oak Hammock",
+          "Slash Pine",
+          "Oak/Broadleaf Hammock",
+          "Hardwood Swamp",
+          "Graminoid Marsh",
+          "Spartina Marsh",
+          "Cattail Marsh",
+          "Salt Marsh",
+          "Mud Flats",
+          "Water"
+
+      ],
+      "num_classes": 13,
+      "training_classes": [1, 2, 4, 5, 7, 9, 10, 11],
+      "testing_classes": [0, 3, 6, 8, 12],
+      "label_offset": 1
+  },
+  
 }
