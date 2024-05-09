@@ -1,0 +1,20 @@
+Dataset : KSC
+N times : 1
+TAU : 1.8
+91.14 Overall accuracy (%)
+86.71 Kappa accuracy (%)
+91.14 Average accuracy (%)
+
+              precision    recall  f1-score   support
+
+           0       0.81      1.00      0.89     15000
+           1       0.97      0.79      0.87     15000
+           2       1.00      0.95      0.97     15000
+
+    accuracy                           0.91     45000
+   macro avg       0.93      0.91      0.91     45000
+weighted avg       0.93      0.91      0.91     45000
+
+[[14947    37    16]
+ [ 3174 11807    19]
+ [  443   298 14259]]

@@ -137,21 +137,38 @@ class Data:
         return self.dataset_meta['target_names']
 
 if __name__ == '__main__':
-    dataset = ['IP', 'PU', 'SA']
+
+    # X = sio.loadmat(f'{os.getcwd()}/Datasets/KSC_corrected.mat')['KSC']
+    # Y = sio.loadmat(f'{os.getcwd()}/Datasets/KSC_gt.mat')['KSC_gt']
+    # print(X)
+    # print(Y)
+
+    dataset = ['KSC']
     for ds in dataset:
         d = Data(ds, 30, 11)
-        target_names = d.get_target_names()
         
-        labelPatches = [patches.Patch(color=spectral.spy_colors[x]/255., label=target_names[x]) for x in range(len(target_names))]
+        X, Y, patches = d.get_data()
+        labelPatches = d.get_target_names()
+
+        print(X.shape)
+        print(Y.shape)
+        print(len(patches))
+        s = 0
+        for i in range(len(patches)):
+            print(len(patches[i]))
+            s += len(patches[i])
+        print(s)
         
+        _, Y = d.get_original_data()
+        print(Y.shape)
+        spectral.save_rgb(os.getcwd() + '\\GT\\KSC.png', Y.astype(int), colors=spectral.spy_colors, format='png')
+        del d
         
-        
-        legend_plt = plt.legend(handles=labelPatches, ncol=1, fontsize='medium', loc='upper center')
-        legend_plt.get_frame().set_linewidth(0)
-        plt.axis('off')
-        plt.tight_layout()
-        plt.savefig(os.getcwd() + '\\legends\\legend_1col_' +
-                    ds + '.png', bbox_inches='tight', dpi=300)
+        # legend_plt = plt.legend(handles=labelPatches, ncol=1, fontsize='medium', loc='upper center')
+        # legend_plt.get_frame().set_linewidth(0)
+        # plt.axis('off')
+        # plt.tight_layout()
+        # plt.savefig(os.getcwd() + '\\legends\\legend_1col_' +
+        #             ds + '.png', bbox_inches='tight', dpi=300)
         # spectral.save_rgb(os.getcwd() + '\\legends\\legend_1col_'+ ds + '.png', Y.astype(
         #     int), colors=spectral.spy_colors, format='png')
-        del d

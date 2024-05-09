@@ -1,0 +1,20 @@
+Dataset : PU
+N times : 1
+TAU : 1.8
+63.75999999999999 Overall accuracy (%)
+45.64 Kappa accuracy (%)
+63.75999999999999 Average accuracy (%)
+
+              precision    recall  f1-score   support
+
+           0       0.50      0.47      0.48     15000
+           1       0.98      0.81      0.88     15000
+           2       0.52      0.64      0.57     15000
+
+    accuracy                           0.64     45000
+   macro avg       0.66      0.64      0.65     45000
+weighted avg       0.66      0.64      0.65     45000
+
+[[ 7008   208  7784]
+ [ 1725 12086  1189]
+ [ 5318    84  9598]]
