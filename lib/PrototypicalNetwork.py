@@ -72,7 +72,7 @@ class Prototypical(Model):
             distances = calc_euclidian_dists(z_query, z_prototypes)
 
             # Calculate the log softmax of the distances. These are the preictions for the current pass.
-            log_predictions = tf.nn.log_softmax(-distances, axis=-1)
+            log_predictions = tf.    nn.log_softmax(-distances, axis=-1)
                 
             # Calculate the loss for the current pass and add it to the total loss.
             loss += - tf.reduce_mean((tf.reduce_sum(tf.multiply(y, log_predictions), axis=-1)))
