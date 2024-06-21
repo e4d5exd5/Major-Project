@@ -143,12 +143,13 @@ if __name__ == '__main__':
     # print(X)
     # print(Y)
 
-    dataset = ['KSC', 'BW']
+    dataset = ['IP', 'KSC', 'BW']
     for ds in dataset:
         d = Data(ds, 30, 11)
         
-        # X, Y, patches = d.get_data()
+        X, Y, patches = d.get_data()
         labelPatches = d.get_target_names()
+        print(labelPatches)
 
         # print(X.shape)
         # print(Y.shape)

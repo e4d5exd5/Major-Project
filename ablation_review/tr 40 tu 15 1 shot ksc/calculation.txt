@@ -1,0 +1,12 @@
+Actual Testing Results: 
+   dataset  encoder  tau  n_times     OA     KA     AA  OA_mean    OA_var  KA_mean     KA_var  AA_mean    AA_var
+0     KSC  conv_sa  1.8        1  93.76  92.20  93.76  92.6575  1.402025   90.820   2.197867  92.6575  1.402025
+1     KSC  conv_sa  1.8        5  98.09  97.61  98.09  94.7860  9.264730   93.480  14.473600  94.7860  9.264730
+2     KSC  conv_sa  1.8       10  97.13  96.42  97.13  95.4100  2.972150   94.264   4.657430  95.4100  2.972150
+3     KSC  conv_sa  1.8       15  98.58  98.23  98.58  97.4500  1.227100   96.810   1.925750  97.4500  1.227100
+4     KSC  conv_sa  1.8       20  96.81  96.02  96.81  96.2420  0.197670   95.304   0.310330  96.2420  0.197670
+
+Post Tune Visualization Result: 
+ Empty DataFrame
+Columns: [OA, KA, AA, dataset, encoder, tau, n_times, OA_mean, OA_var, KA_mean, KA_var, AA_mean, AA_var]
+Index: []
