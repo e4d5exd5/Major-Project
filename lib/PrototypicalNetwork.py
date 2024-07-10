@@ -36,11 +36,11 @@ class Prototypical(Model):
         '''                                                     
         support: support images (25, 11, 11, 30, 1)
         query: query images (75, 11, 11, 30, 1)
-        supppor_labels: support labels (25, 5)
+        support_labels: support labels (25, 5)
         query_labels: query labels (75, 5)
         K: number of support images per class
-        C: number of classes
-        N: number of query images per class
+        N: number of classes
+        C: number of query images per class
         n_times: number of times to pass the query images for variance calculation
         training: True if training, False if testing
         Tau: Temperature Scaling
