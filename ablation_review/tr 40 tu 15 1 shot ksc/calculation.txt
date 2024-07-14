@@ -1,4 +1,4 @@
-Actual Testing Results: 
+   Actual Testing Results: 
    dataset  encoder  tau  n_times     OA     KA     AA  OA_mean    OA_var  KA_mean     KA_var  AA_mean    AA_var
 0     KSC  conv_sa  1.8        1  93.76  92.20  93.76  92.6575  1.402025   90.820   2.197867  92.6575  1.402025
 1     KSC  conv_sa  1.8        5  98.09  97.61  98.09  94.7860  9.264730   93.480  14.473600  94.7860  9.264730
@@ -9,4 +9,36 @@ Actual Testing Results:
 Post Tune Visualization Result: 
  Empty DataFrame
 Columns: [OA, KA, AA, dataset, encoder, tau, n_times, OA_mean, OA_var, KA_mean, KA_var, AA_mean, AA_var]
+Index: []Actual Testing Results: 
+   dataset     encoder  tau  n_times     OA     KA     AA  OA_mean    OA_var  KA_mean     KA_var  AA_mean    AA_var
+0     KSC  conv_no_sa  1.0       25  96.16  95.20  96.16  95.6100  0.637000   94.510   1.000450  95.6100  0.637000
+1     KSC  conv_no_sa  1.8       25  98.38  97.97  98.38  97.0000  2.284350   96.250   3.563650  97.0000  2.284350
+2     KSC     conv_sa  1.0       25  98.92  98.66  98.92  97.2820  2.018120   96.604   3.179030  97.2820  2.018120
+3     KSC     conv_sa  1.8        1  93.76  92.20  93.76  92.6575  1.402025   90.820   2.197867  92.6575  1.402025
+4     KSC     conv_sa  1.8        5  98.09  97.61  98.09  94.7860  9.264730   93.480  14.473600  94.7860  9.264730
+5     KSC     conv_sa  1.8       10  97.13  96.42  97.13  95.4100  2.972150   94.264   4.657430  95.4100  2.972150
+6     KSC     conv_sa  1.8       15  98.58  98.23  98.58  97.4500  1.227100   96.810   1.925750  97.4500  1.227100
+7     KSC     conv_sa  1.8       20  96.81  96.02  96.81  96.2420  0.197670   95.304   0.310330  96.2420  0.197670
+8     KSC     conv_sa  1.8       25  98.76  98.45  98.76  96.8140  2.370430   96.018   3.700420  96.8140  2.370430
+
+Post Tune Visualization Result: 
+ Empty DataFrame
+Columns: [dataset, encoder, tau, n_times, OA, KA, AA, OA_mean, OA_var, KA_mean, KA_var, AA_mean, AA_var]
 Index: []
+
+
+
+
+
+
+
+
+96.16\as 0.63  
+98.38\as 2.28  
+98.92\as 2.01  
+\textbf{98.76}\as \textbf{2.37}
+
+95.20\as 1.00
+97.97\as 3.56
+98.66\as 3.17
+\textbf{98.45}\as \textbf{3.70}
