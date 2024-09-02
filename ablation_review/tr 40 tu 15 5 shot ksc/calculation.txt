@@ -1,16 +1,4 @@
 Actual Testing Results: 
-   dataset  encoder  tau  n_times     OA     KA     AA  OA_mean     OA_var  KA_mean     KA_var  AA_mean     AA_var
-0     KSC  conv_sa  1.8        1  97.58  96.37  97.58  92.2000  12.499550  88.3000  28.142900  92.2000  12.499550
-1     KSC  conv_sa  1.8        5  99.29  98.94  99.29  96.7600   5.649550  95.1420  12.708120  96.7600   5.649550
-2     KSC  conv_sa  1.8       10  98.19  97.28  98.19  96.8820   1.043570  95.3220   2.343170  96.8820   1.043570
-3     KSC  conv_sa  1.8       15  98.07  97.10  98.07  96.7260   1.506280  95.0880   3.370170  96.7260   1.506280
-4     KSC  conv_sa  1.8       20  98.34  97.51  98.34  96.3425   4.467225  94.5125  10.013492  96.3425   4.467225
-5     KSC  conv_sa  1.8       25  99.25  98.88  99.25  96.6620   6.599320  94.9940  14.858180  96.6620   6.599320
-
-Post Tune Visualization Result: 
- Empty DataFrame
-Columns: [OA, KA, AA, dataset, encoder, tau, n_times, OA_mean, OA_var, KA_mean, KA_var, AA_mean, AA_var]
-Index: []Actual Testing Results: 
    dataset     encoder  tau  n_times     OA     KA     AA  OA_mean     OA_var  KA_mean     KA_var  AA_mean     AA_var
 0     KSC  conv_no_sa  1.0       25  98.97  98.45  98.97  96.8040   3.220780  95.2060   7.233230  96.8040   3.220780
 1     KSC  conv_no_sa  1.8       25  99.09  98.64  99.09  97.3720   2.258120  96.0600   5.092400  97.3720   2.258120
@@ -22,20 +10,42 @@ Index: []Actual Testing Results:
 7     KSC     conv_sa  1.8       20  98.34  97.51  98.34  96.3425   4.467225  94.5125  10.013492  96.3425   4.467225
 8     KSC     conv_sa  1.8       25  99.25  98.88  99.25  96.6620   6.599320  94.9940  14.858180  96.6620   6.599320
 
-Post Tune Visualization Result: 
- Empty DataFrame
-Columns: [dataset, encoder, tau, n_times, OA, KA, AA, OA_mean, OA_var, KA_mean, KA_var, AA_mean, AA_var]
-Index: []Actual Testing Results: 
-   dataset     encoder  tau  n_times     OA     KA     AA  OA_mean     OA_var  KA_mean     KA_var  AA_mean     AA_var
-0     KSC  conv_no_sa  1.0       25  98.97  98.45  98.97  96.8040   3.220780  95.2060   7.233230  96.8040   3.220780
-1     KSC  conv_no_sa  1.8       25  99.09  98.64  99.09  97.3720   2.258120  96.0600   5.092400  97.3720   2.258120
-2     KSC     conv_sa  1.0       25  96.91  95.36  96.91  95.3100   2.122950  92.9660   4.772780  95.3100   2.122950
-3     KSC     conv_sa  1.8        1  97.58  96.37  97.58  92.2000  12.499550  88.3000  28.142900  92.2000  12.499550
-4     KSC     conv_sa  1.8        5  99.29  98.94  99.29  96.7600   5.649550  95.1420  12.708120  96.7600   5.649550
-5     KSC     conv_sa  1.8       10  98.19  97.28  98.19  96.8820   1.043570  95.3220   2.343170  96.8820   1.043570
-6     KSC     conv_sa  1.8       15  98.07  97.10  98.07  96.7260   1.506280  95.0880   3.370170  96.7260   1.506280
-7     KSC     conv_sa  1.8       20  98.34  97.51  98.34  96.3425   4.467225  94.5125  10.013492  96.3425   4.467225
-8     KSC     conv_sa  1.8       25  99.25  98.88  99.25  96.6620   6.599320  94.9940  14.858180  96.6620   6.599320
+98.97/as 3.22
+99.09/as 2.26
+96.91/as 2.12
+97.58/as 12.50
+99.29/as 5.65
+98.19/as 1.04
+98.07/as 1.51
+98.34/as 4.47
+99.25/as 6.60
+
+
+98.45/as 7.23
+98.64/as 5.09
+95.36/as 4.77
+96.37/as 28.14
+98.94/as 12.71
+97.28/as 2.34
+97.1/as 3.37
+97.51/as 10.01
+98.88/as 14.86
+
+
+98.97/as 3.22
+99.09/as 2.26
+96.91/as 2.12
+97.58/as 12.50
+99.29/as 5.65
+98.19/as 1.04
+98.07/as 1.51
+98.34/as 4.47
+99.25/as 6.60
+
+
+===============================================
+
+
 
 Post Tune Visualization Result: 
  Empty DataFrame

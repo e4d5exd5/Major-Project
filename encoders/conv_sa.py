@@ -30,7 +30,6 @@ def SelfAttention(x):
     out= layers.Multiply()([out, gamma])
     out = layers.Add()([out, x])
     out = layers.LayerNormalization()(out)
-    
     return out
 
 
@@ -87,9 +86,9 @@ def createModel(IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_DEPTH, IMAGE_CHANNEL):
 
     model = Model(inputs=input_layer, outputs=output_layer_7_dense)
     
-    # print(model.summary())
+    print(model.summary())
     # tf.keras.utils.plot_model(model, to_file='model.png', show_shapes=True)
     return model
     
 if __name__ == '__main__':
-    createModel(11, 11, 30, 1)
+    createModel(9, 9, 30, 1)

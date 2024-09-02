@@ -90,12 +90,12 @@ def process_csv(df):
 
 def main():
     # Example usage:
-    table = './ablation_review/tr 40 tu 15 1 shot bw/'
+    table = './ablation_review/tr 40 tu 15 1 shot ksc/'
     csv_path = table + 'report.csv'
-    folder_path = table + 'IP/conv_sa/1/'
-    datasets = ['IP']
-    taus = ['1', '1.8']
-    encoders = ['conv_no_sa']
+    # folder_path = table + 'IP/conv_sa/1/'
+    # datasets = ['IP']
+    # taus = ['1', '1.8']
+    # encoders = ['conv_no_sa']
 
     input_df = load_csv(csv_path)
     input_df.columns = ['dataset','encoder','tau','n_times','run','OA','KA','AA']
@@ -106,14 +106,26 @@ def main():
     with open(table + 'calculation.txt', '+a') as file:
         file.write('Actual Testing Results: \n ')
         file.write(result_actual_df.to_string(header=True, index=True))
-        
+        file.write('\n\n')
+        for index, row in result_actual_df.iterrows():
+            file.write(f'{row["OA"]}\\as {row["OA_var"]:.2f}\n')
+        file.write('\n\n')
+        for index, row in result_actual_df.iterrows():
+            file.write(f'{row["KA"]}\\as {row["KA_var"]:.2f}\n')
+        file.write('\n\n')
+        for index, row in result_actual_df.iterrows():
+            file.write(f'{row["AA"]}\\as {row["AA_var"]:.2f}\n')
+    
+    
     input_total_df = load_total_csv(table)
     print("Post Tune Visualization Result:")
     result_post_df = process_csv(input_total_df)
     print(result_post_df)
     with open(table + 'calculation.txt', '+a') as file:
+        file.write('\n\n===============================================\n\n')
         file.write('\n\nPost Tune Visualization Result: \n ')
         file.write(result_post_df.to_string(header=True, index=True))
+    
         
                 
     # Print the result DataFrame
