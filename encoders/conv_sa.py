@@ -86,7 +86,7 @@ def createModel(IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_DEPTH, IMAGE_CHANNEL):
 
     model = Model(inputs=input_layer, outputs=output_layer_7_dense)
     
-    print(model.summary())
+    # print(model.summary())
     # tf.keras.utils.plot_model(model, to_file='model.png', show_shapes=True)
     return model
     

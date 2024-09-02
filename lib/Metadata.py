@@ -33,8 +33,11 @@ metadata = {
     "num_classes": 16,
     # "training_classes": [0, 2, 3, 4, 7, 10, 11, 12, 14, 15],
     # "testing_classes": [1, 5, 6, 8, 9, 13],
-    "training_classes": [1, 2, 4, 5, 7, 9, 10, 11, 13, 14],
-    "testing_classes": [0, 3, 6, 8, 12, 15],
+    # "training_classes": [1, 2, 4, 5, 7, 9, 10, 11, 13, 14],
+    # "testing_classes": [0, 3, 6, 8, 12, 15],
+    "training_classes": [0, 2, 3, 4, 5, 7, 10, 11, 12, 15],
+    "testing_classes": [1, 6, 8, 9, 13, 14],
+    # (0, 2, 3, 4, 5, 7, 10, 11, 12, 15)","(1, 6, 8, 9, 13, 14)
     "label_offset": 1
   },
   
