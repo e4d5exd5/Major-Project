@@ -69,7 +69,7 @@ class Stats:
         print('\n')
         print('{}'.format(confusion))
     
-    def saveReport(self, PATH, FINAL_REPORT_PATH, dataset, n_times, tau, run, encoder, predict=False):
+    def saveReport(self, PATH, FINAL_REPORT_PATH, dataset, n_times, tau, run, encoder, predict=False, win_size=11):
         classification = str(self.classification)
         confusion = str(self.confusion)
         print(f'OA {self.oa:.2f} | KA {self.kappa:.2f} | AA {self.aa:.2f}')
@@ -77,6 +77,8 @@ class Stats:
         with open(PATH, 'w') as x_file:
             
             x_file.write('Dataset : {}'.format(dataset))
+            x_file.write('\n')
+            x_file.write('Window Size : {}'.format(win_size))
             x_file.write('\n')
             x_file.write('N times : {}'.format(n_times))
             x_file.write('\n')
@@ -97,7 +99,7 @@ class Stats:
         if not predict:
             with open(FINAL_REPORT_PATH, 'a', newline='') as csvfile:
                 writer = csv.writer(csvfile)
-                writer.writerow([dataset, encoder, tau, n_times, run+1, f'{self.oa:.2f}', f'{self.kappa:.2f}', f'{self.aa:.2f}'])
+                writer.writerow([dataset,win_size, encoder, tau, n_times, run+1, f'{self.oa:.2f}', f'{self.kappa:.2f}', f'{self.aa:.2f}'])
         
     def AA_andEachClassAccuracy(self):
         counter = self.confusion.shape[0]
